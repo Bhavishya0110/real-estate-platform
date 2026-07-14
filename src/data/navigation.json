@@ -1,0 +1,26 @@
+{
+  "main": [
+    { "label": "Home", "href": "/" },
+    { "label": "Projects", "href": "/projects" },
+    { "label": "About", "href": "/about" },
+    { "label": "Blog", "href": "/blog" },
+    { "label": "Careers", "href": "/careers" },
+    { "label": "Contact", "href": "/contact" }
+  ],
+  "explore": [
+    { "label": "Residential", "href": "/residential" },
+    { "label": "Commercial", "href": "/commercial" },
+    { "label": "Gallery", "href": "/gallery" },
+    { "label": "Virtual Tour", "href": "/virtual-tour" },
+    { "label": "EMI Calculator", "href": "/emi-calculator" },
+    { "label": "Testimonials", "href": "/testimonials" }
+  ],
+  "company": [
+    { "label": "About Us", "href": "/about" },
+    { "label": "Management", "href": "/management" },
+    { "label": "Careers", "href": "/careers" },
+    { "label": "Blog & Insights", "href": "/blog" },
+    { "label": "FAQ", "href": "/faq" },
+    { "label": "Privacy & Legal", "href": "/privacy" }
+  ]
+}

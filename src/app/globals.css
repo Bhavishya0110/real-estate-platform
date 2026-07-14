@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   JMS GROUP — BRAND THEME
+   Primary   : Deep Navy   #0D1B2A
+   Secondary : Luxury Gold #C9A84C
+   Surface   : White       #FFFFFF
+   Tailwind v4 is CSS-first: tokens declared here become utilities
+   (bg-navy-900, text-gold-500, font-display, shadow-luxe, ...).
+   ===================================================================== */
+
+@theme {
+  /* --- Primary: Deep Navy ------------------------------------------ */
+  --color-navy-50: #f4f7fa;
+  --color-navy-100: #e3eaf1;
+  --color-navy-200: #c0d0df;
+  --color-navy-300: #8aa7c4;
+  --color-navy-400: #547fab;
+  --color-navy-500: #2e5f91;
+  --color-navy-600: #234a73;
+  --color-navy-700: #1b3a5a;
+  --color-navy-800: #142b42;
+  --color-navy-900: #0d1b2a; /* BRAND */
+  --color-navy-950: #060d14;
+
+  /* --- Secondary: Luxury Gold --------------------------------------- */
+  --color-gold-50: #fbf8ef;
+  --color-gold-100: #f7f0de;
+  --color-gold-200: #efe2c1;
+  --color-gold-300: #e2cf99;
+  --color-gold-400: #d6bc72;
+  --color-gold-500: #c9a84c; /* BRAND */
+  --color-gold-600: #a98a37;
+  --color-gold-700: #8a6f2c;
+  --color-gold-800: #6b5522;
+  --color-gold-900: #4c3c18;
+
+  /* --- Semantic surface tokens -------------------------------------- */
+  --color-background: #ffffff;
+  --color-foreground: var(--color-navy-900);
+  --color-muted: var(--color-navy-50);
+  --color-muted-foreground: #5b6b7c;
+  --color-border: #e6eaef;
+
+  /* --- Typography ---------------------------------------------------- */
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Elevation ----------------------------------------------------- */
+  --shadow-luxe: 0 20px 50px -12px rgb(13 27 42 / 0.18);
+  --shadow-luxe-lg: 0 32px 70px -20px rgb(13 27 42 / 0.28);
+
+  /* --- Motion --------------------------------------------------------- */
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-marquee: marquee 32s linear infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* =====================================================================
+   BASE
+   ===================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Safety net: a stray decorative element must never be able to widen the
+       page. `clip` (not `hidden`) because `hidden` would silently kill
+       position:sticky on descendants. */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    /* Long project names and taglines must break rather than push the layout
+       wide at 320px. */
+    overflow-wrap: break-word;
+  }
+
+  /* Raster media is fluid by default — it can never exceed its column.
+     SVGs are excluded on purpose: every icon here is sized by a utility class,
+     and a blanket `height:auto` would fight those. */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Keyboard accessibility — BRD §7 Accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-500);
+    color: var(--color-navy-900);
+  }
+}
+
+/* =====================================================================
+   REUSABLE BRAND UTILITIES
+   ===================================================================== */
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Thin gold rule used under section eyebrows */
+@utility gold-rule {
+  display: block;
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-500),
+    transparent
+  );
+}
+
+/* Respect users who prefer reduced motion — BRD §7 Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

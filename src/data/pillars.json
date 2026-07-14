@@ -1,0 +1,26 @@
+[
+  {
+    "id": "pillar-quality",
+    "title": "Quality Construction",
+    "description": "M-40 grade structures, third-party audited at every slab. We publish our test reports because we are happy to be checked.",
+    "icon": "HardHat"
+  },
+  {
+    "id": "pillar-location",
+    "title": "Prime Locations",
+    "description": "Every site is bought on a growth corridor — metro, highway or IT belt — years before the market catches on.",
+    "icon": "MapPin"
+  },
+  {
+    "id": "pillar-pricing",
+    "title": "Transparent Pricing",
+    "description": "One price sheet, all-inclusive. No floor-rise surprises, no hidden charges, no negotiation theatre.",
+    "icon": "ReceiptIndianRupee"
+  },
+  {
+    "id": "pillar-support",
+    "title": "After-Sale Support",
+    "description": "A named relationship manager from booking to handover — and a five-year structural warranty after it.",
+    "icon": "LifeBuoy"
+  }
+]

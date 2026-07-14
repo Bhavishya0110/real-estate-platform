@@ -1,0 +1,52 @@
+[
+  {
+    "id": "tst-01",
+    "name": "Rohan & Aditi Deshpande",
+    "role": "Homeowners",
+    "projectName": "Pearl",
+    "rating": 5,
+    "quote": "We were shown a completed flat, not a render. Possession came six weeks early, the snag list was closed in nine days, and the clubhouse actually worked on day one. That never happens.",
+    "type": "video",
+    "avatarInitials": "RD"
+  },
+  {
+    "id": "tst-02",
+    "name": "Meera Iyer",
+    "role": "Investor",
+    "projectName": "Elegante",
+    "rating": 5,
+    "quote": "I bought two retail units on the ROI projection they published. Eighteen months in, the actual yield is running slightly ahead of what they modelled. I have never been able to say that about a developer.",
+    "type": "video",
+    "avatarInitials": "MI"
+  },
+  {
+    "id": "tst-03",
+    "name": "Col. Vikram Rane (Retd.)",
+    "role": "Resident",
+    "projectName": "Silver Living",
+    "rating": 5,
+    "quote": "Grab rails, no thresholds, a doctor on call at two in the morning when I needed one. They designed this for how we actually live, not how a brochure imagines we live.",
+    "type": "video",
+    "avatarInitials": "VR"
+  },
+  {
+    "id": "tst-04",
+    "name": "Sanjay Kulkarni",
+    "role": "Homeowner",
+    "projectName": "Crosswalk",
+    "rating": 5,
+    "quote": "The price on the first sheet was the price on the final invoice. In this industry that is worth more than any amenity.",
+    "type": "text",
+    "avatarInitials": "SK"
+  },
+  {
+    "id": "tst-05",
+    "name": "Fatima Shaikh",
+    "role": "Homeowner",
+    "projectName": "Marine Square",
+    "rating": 4,
+    "quote": "The sea-facing sundeck sold it to us, but it was the relationship manager — one person, start to finish, who answered every call — that made us recommend them to my brother.",
+    "type": "text",
+    "avatarInitials": "FS"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "blg-01",
+    "slug": "pune-property-market-outlook-2026",
+    "title": "Pune's Property Market in 2026: Where the Next Corridor Is Forming",
+    "excerpt": "Metro Line 3 and the Ring Road are quietly redrawing the map. Here is where prices have already moved — and the three pockets we think are still underpriced.",
+    "category": "Market Trends",
+    "author": "Anand Mehta",
+    "publishedAt": "2026-06-28",
+    "readTimeMinutes": 7
+  },
+  {
+    "id": "blg-02",
+    "slug": "home-loan-checklist-first-time-buyers",
+    "title": "The Home Loan Checklist Every First-Time Buyer Gets Wrong",
+    "excerpt": "Your EMI is not your cost of ownership. A practical walkthrough of the seven numbers to compute before you sign — and the two that lenders would rather you not ask about.",
+    "category": "Buying Guide",
+    "author": "Priya Nair",
+    "publishedAt": "2026-06-14",
+    "readTimeMinutes": 9
+  },
+  {
+    "id": "blg-03",
+    "slug": "rera-what-it-actually-protects",
+    "title": "RERA: What It Actually Protects You From (And What It Doesn't)",
+    "excerpt": "Most buyers treat the RERA number as a rubber stamp. It is a legal instrument with real teeth — if you know which three clauses to read before booking.",
+    "category": "Project Updates",
+    "author": "Anand Mehta",
+    "publishedAt": "2026-05-30",
+    "readTimeMinutes": 6
+  }
+]

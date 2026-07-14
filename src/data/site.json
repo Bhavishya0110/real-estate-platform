@@ -1,0 +1,17 @@
+{
+  "name": "JMS Group",
+  "legalName": "JMS Group Developers Pvt. Ltd.",
+  "tagline": "Build Your Future With Us",
+  "description": "JMS Group builds residential, commercial and plotted developments across Maharashtra. Fourteen landmark projects, RERA-certified, delivered on time for over two decades.",
+  "phone": "+91 98220 10101",
+  "whatsapp": "919822010101",
+  "email": "sales@jmsgroup.in",
+  "address": "JMS House, Senapati Bapat Road, Shivajinagar, Pune 411016",
+  "reraNumber": "P52100048921",
+  "social": [
+    { "label": "Instagram", "href": "https://instagram.com" },
+    { "label": "LinkedIn", "href": "https://linkedin.com" },
+    { "label": "YouTube", "href": "https://youtube.com" },
+    { "label": "Facebook", "href": "https://facebook.com" }
+  ]
+}
