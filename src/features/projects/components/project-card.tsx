@@ -42,7 +42,7 @@ export function ProjectCard({
           ) : null}
         </div>
 
-        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+        <div className="absolute inset-x-0 bottom-0 p-4 transition-transform duration-500 group-hover:-translate-y-1 sm:p-5">
           <p className="font-display text-base text-white/90 italic sm:text-lg">
             {project.tagline}
           </p>
@@ -64,7 +64,14 @@ export function ProjectCard({
               exposed to assistive tech and the keyboard. */}
           <Link
             href={`/projects/${project.slug}`}
-            className="after:absolute after:inset-0 after:content-['']"
+            /* Gold underline wipes in on hover. No `relative` here on purpose:
+               the ::after stretches to the card (the nearest positioned
+               ancestor), which is what makes the whole card clickable. */
+            className={cn(
+              "bg-gradient-to-r from-gold-500 to-gold-500 bg-[length:0%_1px] bg-bottom bg-no-repeat pb-0.5",
+              "transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]",
+              "after:absolute after:inset-0 after:content-['']",
+            )}
           >
             {project.name}
           </Link>

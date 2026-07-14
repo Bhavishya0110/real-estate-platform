@@ -20,9 +20,12 @@ import { calculateEmi } from "../lib/emi";
 export function EmiCalculator({
   defaultPrincipal = 7500000,
   compact = false,
+  /** Hidden on /emi-calculator itself, where the CTA would link to this page. */
+  showFullEmiLink = true,
 }: {
   defaultPrincipal?: number;
   compact?: boolean;
+  showFullEmiLink?: boolean;
 }) {
   const [principal, setPrincipal] = useState(defaultPrincipal);
   const [rate, setRate] = useState(8.5);
@@ -132,10 +135,12 @@ export function EmiCalculator({
         </div>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <Button href="/emi-calculator" variant="gold" size="md" className="flex-1">
-            Check Full EMI
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Button>
+          {showFullEmiLink ? (
+            <Button href="/emi-calculator" variant="gold" size="md" className="flex-1">
+              Check Full EMI
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Button>
+          ) : null}
 
           <Button
             href={whatsappUrl(

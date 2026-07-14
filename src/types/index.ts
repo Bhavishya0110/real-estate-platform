@@ -108,11 +108,17 @@ export interface SiteConfig {
   name: string;
   legalName: string;
   tagline: string;
+  positioning: string;
   description: string;
+  vision: string;
+  mission: string;
+  foundedYear: number;
   phone: string;
+  landline: string;
   whatsapp: string;
   email: string;
   address: string;
+  /** Empty until the business supplies it — the UI hides the row when blank. */
   reraNumber: string;
   social: { label: string; href: string }[];
 }

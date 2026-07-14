@@ -41,7 +41,7 @@ export async function Hero() {
           <div className="flex items-center gap-3">
             <span className="gold-rule shrink-0" aria-hidden="true" />
             <span className="eyebrow text-gold-500">
-              {projectCount} Landmark Projects · Since 2004
+              {projectCount} Landmark Projects · Gurugram &amp; NCR
             </span>
           </div>
 
@@ -51,9 +51,9 @@ export async function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-navy-200 sm:mt-8 sm:text-lg">
-            Residential, commercial and plotted developments across Maharashtra —
-            RERA-certified, delivered on time, and priced on a single transparent
-            sheet.
+            Residential, commercial and plotted developments across Gurugram and
+            the NCR — RERA-certified, delivered on time, and priced on a single
+            transparent sheet.
           </p>
 
           {/* Buttons go full-width on the narrowest phones — two cramped pills

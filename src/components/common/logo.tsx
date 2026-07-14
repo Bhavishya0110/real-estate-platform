@@ -42,7 +42,7 @@ export function Logo({
             onDark ? "text-navy-300" : "text-muted-foreground",
           )}
         >
-          Since 2004
+          Since {siteConfig.foundedYear}
         </span>
       </span>
     </Link>

@@ -22,16 +22,17 @@ const inter = Inter({
 
 /* BRD §7 SEO — meta tags, friendly URLs, structured data, social cards. */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jmsgroup.in"),
+  metadataBase: new URL("https://jmsgroup.co.in"),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: `${siteConfig.name} — ${siteConfig.positioning}`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   keywords: [
-    "real estate Pune",
-    "residential projects",
-    "commercial property",
+    "real estate Gurugram",
+    "property in NCR",
+    "residential projects Gurgaon",
+    "commercial property Gurugram",
     "RERA approved",
     "JMS Group",
   ],

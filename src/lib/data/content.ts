@@ -50,9 +50,17 @@ export async function getBlogPosts(limit?: number): Promise<BlogPost[]> {
   return limit ? posts.slice(0, limit) : posts;
 }
 
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  return (blogJson as BlogPost[]).find((post) => post.slug === slug) ?? null;
+}
+
 export async function getJobs(limit?: number): Promise<Job[]> {
   const jobs = jobsJson as Job[];
   return limit ? jobs.slice(0, limit) : jobs;
+}
+
+export async function getJobBySlug(slug: string): Promise<Job | null> {
+  return (jobsJson as Job[]).find((job) => job.slug === slug) ?? null;
 }
 
 export async function getJobCount(): Promise<number> {

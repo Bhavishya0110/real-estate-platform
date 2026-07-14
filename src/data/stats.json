@@ -1,8 +1,8 @@
 [
-  { "id": "stat-years", "value": 22, "suffix": "+", "label": "Years of Building" },
+  { "id": "stat-years", "value": 13, "suffix": "+", "label": "Years of Building" },
   { "id": "stat-projects", "value": 14, "suffix": "", "label": "Landmark Projects" },
-  { "id": "stat-families", "value": 4200, "suffix": "+", "label": "Happy Families" },
+  { "id": "stat-customers", "value": 1000, "suffix": "+", "label": "Investors & Customers" },
+  { "id": "stat-team", "value": 100, "suffix": "+", "label": "Team Members" },
   { "id": "stat-rera", "value": 100, "suffix": "%", "label": "RERA Certified" },
-  { "id": "stat-awards", "value": 18, "suffix": "", "label": "Industry Awards" },
   { "id": "stat-iso", "value": 9001, "suffix": "", "label": "ISO Certified" }
 ]

@@ -179,9 +179,13 @@ export async function Footer() {
         <Container>
           <div className="flex flex-col gap-6 py-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+              {/* The business has not published a RERA registration number yet,
+                  so we state the certification without fabricating an ID. */}
               <p className="inline-flex items-center gap-2 text-xs text-navy-300">
                 <ShieldCheck className="size-4 text-gold-500" aria-hidden="true" />
-                MahaRERA: {siteConfig.reraNumber}
+                {siteConfig.reraNumber
+                  ? `HRERA: ${siteConfig.reraNumber}`
+                  : "HRERA registered · numbers listed per project"}
               </p>
               <p className="text-xs text-navy-400">
                 © {year} {siteConfig.legalName}. All rights reserved.

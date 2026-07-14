@@ -1,17 +1,23 @@
 {
   "name": "JMS Group",
-  "legalName": "JMS Group Developers Pvt. Ltd.",
+  "legalName": "JMS Buildtech",
   "tagline": "Build Your Future With Us",
-  "description": "JMS Group builds residential, commercial and plotted developments across Maharashtra. Fourteen landmark projects, RERA-certified, delivered on time for over two decades.",
-  "phone": "+91 98220 10101",
-  "whatsapp": "919822010101",
-  "email": "sales@jmsgroup.in",
-  "address": "JMS House, Senapati Bapat Road, Shivajinagar, Pune 411016",
-  "reraNumber": "P52100048921",
+  "positioning": "Turning Aspirations Into Reality With Exceptional Real Estate Development",
+  "description": "A future-forward and accountable real estate developer, building a globally diversified, centrally managed and transparently governed portfolio across Gurugram and the NCR region.",
+  "vision": "We envision a collaborative future where, by fostering innovation and trust, we redefine the real estate industry, delivering exceptional value and achieving prosperity for all.",
+  "mission": "To elevate communities through exceptional, sustainable real estate development.",
+  "foundedYear": 2013,
+  "phone": "+91 801 0000 777",
+  "landline": "0124 4215130",
+  "whatsapp": "918010000777",
+  "email": "info@jmsgroup.co.in",
+  "address": "M3M Tee Point, 7th Floor, North Block, Sector 65, Gurugram, Haryana 122018",
+  "reraNumber": "",
   "social": [
-    { "label": "Instagram", "href": "https://instagram.com" },
-    { "label": "LinkedIn", "href": "https://linkedin.com" },
-    { "label": "YouTube", "href": "https://youtube.com" },
-    { "label": "Facebook", "href": "https://facebook.com" }
+    { "label": "Instagram", "href": "https://www.instagram.com/officialjmsgroup/" },
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/company/jms-buildtech/" },
+    { "label": "YouTube", "href": "https://www.youtube.com/@JMSGroup1" },
+    { "label": "Facebook", "href": "https://www.facebook.com/jmsgroup1" },
+    { "label": "Twitter", "href": "https://twitter.com/JMSBuildtech" }
   ]
 }

@@ -24,7 +24,7 @@ export async function Testimonials() {
       <Container>
         <SectionHeading
           eyebrow="Social Proof"
-          title="4,200 families. Ask any of them."
+          title="A thousand customers. Ask any of them."
           description="We did not write these. Every review is tied to a real booking, a real handover and a real name."
           action={
             <Button href="/testimonials" variant="outline" size="md">
