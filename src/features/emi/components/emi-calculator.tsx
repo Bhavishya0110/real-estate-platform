@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
 import { whatsappUrl } from "@/lib/whatsapp";
-import { calculateEmi } from "../lib/emi";
+import { calculateEmi, calculatePrepaymentSaving } from "../lib/emi";
 
 /**
  * BRD Home blueprint §07 — EMI Calculator:
@@ -27,9 +27,16 @@ export function EmiCalculator({
   compact?: boolean;
   showFullEmiLink?: boolean;
 }) {
-  const [principal, setPrincipal] = useState(defaultPrincipal);
+  /** Property price, not loan amount — the loan is what remains after the
+      down payment, which is how buyers actually think about it. */
+  const [price, setPrice] = useState(defaultPrincipal);
+  const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [rate, setRate] = useState(8.5);
   const [years, setYears] = useState(20);
+  const [extraPerMonth, setExtraPerMonth] = useState(0);
+
+  const downPayment = Math.round((price * downPaymentPct) / 100);
+  const principal = Math.max(0, price - downPayment);
 
   const emi = useMemo(
     () =>
@@ -41,20 +48,48 @@ export function EmiCalculator({
     [principal, rate, years],
   );
 
+  const saving = useMemo(
+    () =>
+      calculatePrepaymentSaving(
+        { principal, annualRatePercent: rate, tenureYears: years },
+        extraPerMonth,
+      ),
+    [principal, rate, years, extraPerMonth],
+  );
+
   return (
     <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
       {/* --- Inputs -------------------------------------------------------- */}
       <div className="flex flex-col gap-7 sm:gap-8">
         <Slider
-          id="emi-principal"
-          label="Loan Amount"
-          valueLabel={formatCompactCurrency(principal)}
+          id="emi-price"
+          label="Property Price"
+          valueLabel={formatCompactCurrency(price)}
           min={500000}
           max={100000000}
           step={100000}
-          value={principal}
-          onChange={(event) => setPrincipal(Number(event.target.value))}
+          value={price}
+          onChange={(event) => setPrice(Number(event.target.value))}
         />
+
+        <div>
+          <Slider
+            id="emi-down-payment"
+            label="Down Payment"
+            valueLabel={`${downPaymentPct}%`}
+            min={0}
+            max={80}
+            step={5}
+            value={downPaymentPct}
+            onChange={(event) => setDownPaymentPct(Number(event.target.value))}
+          />
+          <p className="mt-2.5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+            <span>You pay {formatCurrency(downPayment)} upfront</span>
+            <span className="font-medium text-navy-800">
+              Loan: {formatCurrency(principal)}
+            </span>
+          </p>
+        </div>
 
         <Slider
           id="emi-rate"
@@ -78,10 +113,48 @@ export function EmiCalculator({
           onChange={(event) => setYears(Number(event.target.value))}
         />
 
+        {/* Prepayment is the single biggest lever a borrower controls, so it
+            is surfaced rather than buried in a footnote. */}
+        <div>
+          <Slider
+            id="emi-prepayment"
+            label="Extra Payment Each Month"
+            valueLabel={
+              extraPerMonth > 0 ? formatCompactCurrency(extraPerMonth) : "None"
+            }
+            min={0}
+            max={100000}
+            step={1000}
+            value={extraPerMonth}
+            onChange={(event) => setExtraPerMonth(Number(event.target.value))}
+          />
+
+          {extraPerMonth > 0 && saving.monthsSaved > 0 ? (
+            <p
+              aria-live="polite"
+              className="mt-3 rounded-sm border border-gold-500/30 bg-gold-50 p-3 text-xs leading-relaxed text-navy-800"
+            >
+              Paying {formatCompactCurrency(extraPerMonth)} extra each month
+              clears the loan{" "}
+              <span className="font-semibold">
+                {Math.floor(saving.monthsSaved / 12) > 0
+                  ? `${Math.floor(saving.monthsSaved / 12)} yr ${saving.monthsSaved % 12} mo`
+                  : `${saving.monthsSaved} months`}
+              </span>{" "}
+              early and saves{" "}
+              <span className="font-semibold text-gold-700">
+                {formatCurrency(saving.interestSaved)}
+              </span>{" "}
+              in interest.
+            </p>
+          ) : null}
+        </div>
+
         {!compact ? (
           <p className="text-xs leading-relaxed text-muted-foreground">
             Indicative only. Actual EMI depends on the lender&apos;s credit
             assessment, processing fees and the rate on your sanction letter.
+            Stamp duty, registration and GST sit outside the loan.
           </p>
         ) : null}
       </div>

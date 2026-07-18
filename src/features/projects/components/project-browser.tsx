@@ -1,18 +1,22 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { Heart, Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CompareTray } from "@/features/compare/components/compare-tray";
+import { FAVORITES_KEY } from "@/features/favorites/lib/keys";
 import { ProjectCard } from "@/features/projects/components/project-card";
 import {
   ANY,
   applyFilters,
+  EMPTY_FILTERS,
   sortProjects,
   SORT_OPTIONS,
   type ProjectFilters,
   type SortKey,
 } from "@/features/projects/lib/filter";
 import { formatCompactCurrency } from "@/lib/format";
+import { useLocalSet } from "@/lib/use-local-set";
 import { cn } from "@/lib/utils";
 import type { Project, ProjectCategory } from "@/types";
 
@@ -40,11 +44,22 @@ export function ProjectBrowser({
 }) {
   const [filters, setFilters] = useState<ProjectFilters>(initialFilters);
   const [sort, setSort] = useState<SortKey>("featured");
+  const [favouritesOnly, setFavouritesOnly] = useState(false);
 
-  const visible = useMemo(
-    () => sortProjects(applyFilters(projects, filters), sort),
-    [projects, filters, sort],
+  const { items: favourites, ready: favouritesReady } = useLocalSet(FAVORITES_KEY);
+
+  const statuses = useMemo(
+    () => [...new Set(projects.map((project) => project.status))],
+    [projects],
   );
+
+  const visible = useMemo(() => {
+    let result = applyFilters(projects, filters);
+    if (favouritesOnly) {
+      result = result.filter((project) => favourites.includes(project.slug));
+    }
+    return sortProjects(result, sort);
+  }, [projects, filters, sort, favouritesOnly, favourites]);
 
   const showTabs = (categories?.length ?? 0) > 1;
 
@@ -65,6 +80,9 @@ export function ProjectBrowser({
           label: filters.bhk === "4" ? "4 BHK+" : `${filters.bhk} BHK`,
         }
       : null,
+    filters.status !== ANY
+      ? { key: "status" as const, label: filters.status as string }
+      : null,
   ].filter(Boolean) as { key: keyof ProjectFilters; label: string }[];
 
   function clearChip(key: keyof ProjectFilters) {
@@ -72,13 +90,35 @@ export function ProjectBrowser({
   }
 
   function clearAll() {
-    setFilters({ category: ANY, city: ANY, budget: ANY, bhk: ANY });
+    setFilters(EMPTY_FILTERS);
+    setFavouritesOnly(false);
   }
 
   return (
     <div className={className}>
+      {/* --- Search ------------------------------------------------------- */}
+      <div className="relative">
+        <Search
+          className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
+          aria-hidden="true"
+        />
+        <label htmlFor="project-search" className="sr-only">
+          Search projects by name, location, type or amenity
+        </label>
+        <input
+          id="project-search"
+          type="search"
+          value={filters.query}
+          onChange={(event) =>
+            setFilters((current) => ({ ...current, query: event.target.value }))
+          }
+          placeholder="Search by name, location, type or amenity…"
+          className="h-13 w-full rounded-sm border border-border bg-white pr-4 pl-11 text-sm text-navy-900 placeholder:text-muted-foreground focus:border-gold-500 focus:outline-none"
+        />
+      </div>
+
       {/* --- Toolbar ------------------------------------------------------ */}
-      <div className="flex flex-col gap-5 border-b border-border pb-6">
+      <div className="mt-6 flex flex-col gap-5 border-b border-border pb-6">
         {showTabs ? (
           <div
             role="tablist"
@@ -115,26 +155,73 @@ export function ProjectBrowser({
             of {projects.length} projects
           </p>
 
-          <label className="flex items-center gap-2 text-sm">
-            <SlidersHorizontal
-              className="size-4 text-gold-600"
-              aria-hidden="true"
-            />
-            <span className="sr-only sm:not-sr-only sm:text-muted-foreground">
-              Sort by
-            </span>
-            <select
-              value={sort}
-              onChange={(event) => setSort(event.target.value as SortKey)}
-              className="h-10 rounded-sm border border-border bg-white px-3 text-sm text-navy-900 focus:border-gold-500 focus:outline-none"
+          <div className="flex flex-wrap items-center gap-3">
+            {/* --- Saved-only toggle ------------------------------------- */}
+            <button
+              type="button"
+              onClick={() => setFavouritesOnly((value) => !value)}
+              aria-pressed={favouritesOnly}
+              disabled={!favouritesReady || favourites.length === 0}
+              className={cn(
+                "inline-flex h-10 items-center gap-2 rounded-sm border px-3 text-sm transition-colors",
+                "disabled:cursor-not-allowed disabled:opacity-50",
+                favouritesOnly
+                  ? "border-gold-500 bg-gold-500 text-navy-900"
+                  : "border-border bg-white text-navy-700 hover:border-navy-900/40",
+              )}
             >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
+              <Heart
+                className={cn("size-4", favouritesOnly && "fill-current")}
+                aria-hidden="true"
+              />
+              Saved
+              {favouritesReady && favourites.length > 0 ? (
+                <span className="text-xs">({favourites.length})</span>
+              ) : null}
+            </button>
+
+            {/* --- Status ------------------------------------------------- */}
+            <label className="flex items-center gap-2 text-sm">
+              <span className="sr-only">Filter by status</span>
+              <select
+                value={filters.status}
+                onChange={(event) =>
+                  setFilters((current) => ({
+                    ...current,
+                    status: event.target.value,
+                  }))
+                }
+                className="h-10 rounded-sm border border-border bg-white px-3 text-sm text-navy-900 focus:border-gold-500 focus:outline-none"
+              >
+                <option value={ANY}>Any status</option>
+                {statuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {/* --- Sort --------------------------------------------------- */}
+            <label className="flex items-center gap-2 text-sm">
+              <SlidersHorizontal
+                className="size-4 text-gold-600"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Sort by</span>
+              <select
+                value={sort}
+                onChange={(event) => setSort(event.target.value as SortKey)}
+                className="h-10 rounded-sm border border-border bg-white px-3 text-sm text-navy-900 focus:border-gold-500 focus:outline-none"
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         </div>
 
         {/* --- Active filter chips ---------------------------------------- */}
@@ -180,11 +267,14 @@ export function ProjectBrowser({
       ) : (
         <div className="mt-12 rounded-sm border border-dashed border-border bg-navy-50 p-10 text-center sm:p-16">
           <h2 className="font-display text-xl text-navy-900 sm:text-2xl">
-            Nothing matches that combination — yet.
+            {favouritesOnly
+              ? "Nothing saved that matches these filters."
+              : "Nothing matches that combination — yet."}
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Try widening the budget or clearing a filter. Our advisors can also
-            tell you what is releasing next in this bracket.
+            {favouritesOnly
+              ? "Tap the heart on any project to build a shortlist you can come back to."
+              : "Try widening the budget or clearing a filter. Our advisors can also tell you what is releasing next in this bracket."}
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
@@ -197,6 +287,9 @@ export function ProjectBrowser({
           </div>
         </div>
       )}
+
+      {/* Docked comparison tray — renders itself only when something is picked. */}
+      <CompareTray projects={projects} />
     </div>
   );
 }

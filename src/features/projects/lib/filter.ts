@@ -20,6 +20,10 @@ export interface ProjectFilters {
   budget: number | typeof ANY;
   /** "2" | "3" | "4" (4 means 4 or more), or ANY. */
   bhk: string | typeof ANY;
+  /** Free-text search. Empty string means no text constraint. */
+  query: string;
+  /** Project status, or ANY. */
+  status: string | typeof ANY;
 }
 
 export const EMPTY_FILTERS: ProjectFilters = {
@@ -27,6 +31,8 @@ export const EMPTY_FILTERS: ProjectFilters = {
   city: ANY,
   budget: ANY,
   bhk: ANY,
+  query: "",
+  status: ANY,
 };
 
 export type SortKey = "featured" | "price-asc" | "price-desc" | "name";
@@ -51,6 +57,38 @@ function matchesBhk(project: Project, bhk: string): boolean {
   });
 }
 
+/**
+ * Free-text search across the fields a buyer would actually type: the project
+ * name, its pitch, where it is, what type it is, and what it has.
+ *
+ * Every whitespace-separated term must match somewhere (AND), so "retail baner"
+ * narrows rather than widens. Deliberately simple and dependency-free — the
+ * corpus is fourteen records, so an index would be over-engineering.
+ */
+export function matchesQuery(project: Project, query: string): boolean {
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  if (terms.length === 0) return true;
+
+  const haystack = [
+    project.name,
+    project.tagline,
+    project.description,
+    project.category,
+    project.status,
+    project.location,
+    project.city,
+    project.priceLabel,
+    project.possession,
+    ...project.configurations,
+    ...project.amenities,
+    ...project.highlights,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return terms.every((term) => haystack.includes(term));
+}
+
 export function applyFilters(
   projects: Project[],
   filters: ProjectFilters,
@@ -66,6 +104,12 @@ export function applyFilters(
       return false;
     }
     if (filters.bhk !== ANY && !matchesBhk(project, filters.bhk)) {
+      return false;
+    }
+    if (filters.status !== ANY && project.status !== filters.status) {
+      return false;
+    }
+    if (filters.query && !matchesQuery(project, filters.query)) {
       return false;
     }
     return true;
@@ -103,6 +147,7 @@ export function filtersFromQuery(
 
   const budget = read("budget");
   const parsedBudget = budget === ANY ? ANY : Number(budget);
+  const searchTerm = read("q");
 
   return {
     category: read("type") as ProjectFilters["category"],
@@ -110,5 +155,7 @@ export function filtersFromQuery(
     budget:
       parsedBudget === ANY || !Number.isFinite(parsedBudget) ? ANY : parsedBudget,
     bhk: read("bhk"),
+    query: searchTerm === ANY ? "" : searchTerm,
+    status: read("status"),
   };
 }

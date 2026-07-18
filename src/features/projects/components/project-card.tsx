@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight, MapPin, Maximize2 } from "lucide-react";
 import { ProjectMedia } from "@/components/common/project-media";
 import { Badge, StatusBadge } from "@/components/ui/badge";
+import { CompareButton } from "@/features/compare/components/compare-button";
+import { FavoriteButton } from "@/features/favorites/components/favorite-button";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types";
 
@@ -32,14 +34,22 @@ export function ProjectCard({
           <ProjectMedia project={project} priority={priority} />
         </div>
 
-        <div className="absolute inset-x-0 top-0 flex flex-wrap items-start justify-between gap-2 p-3 sm:p-4">
-          <StatusBadge status={project.status} />
-          {project.hasVirtualTour ? (
-            <Badge variant="outline" className="gap-1">
-              <Maximize2 className="size-3" aria-hidden="true" />
-              360° Tour
-            </Badge>
-          ) : null}
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3 sm:p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={project.status} />
+            {project.hasVirtualTour ? (
+              <Badge variant="outline" className="gap-1">
+                <Maximize2 className="size-3" aria-hidden="true" />
+                360° Tour
+              </Badge>
+            ) : null}
+          </div>
+
+          {/* The only interactive parts of this otherwise-server card. */}
+          <div className="flex shrink-0 items-center gap-2">
+            <CompareButton slug={project.slug} name={project.name} />
+            <FavoriteButton slug={project.slug} name={project.name} />
+          </div>
         </div>
 
         <div className="absolute inset-x-0 bottom-0 p-4 transition-transform duration-500 group-hover:-translate-y-1 sm:p-5">
