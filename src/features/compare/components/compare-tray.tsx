@@ -70,7 +70,10 @@ export function CompareTray({ projects }: { projects: Project[] }) {
     <>
       {/* --- Docked tray ------------------------------------------------- */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-navy-900/95 backdrop-blur-md">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 md:px-8 lg:px-12">
+        {/* Right padding clears the floating assistant launcher, which sits in
+            the same corner — without it the Compare button is unreachable on a
+            phone. */}
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-4 pr-20 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pr-24 md:px-8 lg:px-12 lg:pr-24">
           <div className="flex min-w-0 items-center gap-3">
             <Scale className="size-5 shrink-0 text-gold-500" aria-hidden="true" />
             <p className="truncate text-sm text-navy-200">
