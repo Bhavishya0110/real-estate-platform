@@ -36,7 +36,7 @@ export function GalleryGrid({ projects }: { projects: Project[] }) {
     <div>
       {/* --- Category tabs ------------------------------------------------ */}
       <div
-        role="tablist"
+        role="group"
         aria-label="Filter gallery"
         className="flex flex-wrap gap-2"
       >
@@ -47,8 +47,7 @@ export function GalleryGrid({ projects }: { projects: Project[] }) {
             <button
               key={option}
               type="button"
-              role="tab"
-              aria-selected={active}
+              aria-pressed={active}
               onClick={() => setTab(option)}
               className={cn(
                 "h-11 rounded-sm border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:px-5",

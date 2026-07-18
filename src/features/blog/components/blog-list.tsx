@@ -32,7 +32,7 @@ export function BlogList({
     <div>
       {/* --- Category filter ---------------------------------------------- */}
       <div
-        role="tablist"
+        role="group"
         aria-label="Filter articles by category"
         className="flex flex-wrap gap-2"
       >
@@ -43,8 +43,7 @@ export function BlogList({
             <button
               key={option}
               type="button"
-              role="tab"
-              aria-selected={active}
+              aria-pressed={active}
               onClick={() => setCategory(option)}
               className={cn(
                 "h-11 rounded-sm border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:px-5",

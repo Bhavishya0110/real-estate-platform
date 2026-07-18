@@ -31,7 +31,7 @@ export function JobList({
     <div>
       {/* --- Department filter -------------------------------------------- */}
       <div
-        role="tablist"
+        role="group"
         aria-label="Filter roles by department"
         className="flex flex-wrap gap-2"
       >
@@ -42,8 +42,7 @@ export function JobList({
             <button
               key={option}
               type="button"
-              role="tab"
-              aria-selected={active}
+              aria-pressed={active}
               onClick={() => setDepartment(option)}
               className={cn(
                 "h-11 rounded-sm border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:px-5",

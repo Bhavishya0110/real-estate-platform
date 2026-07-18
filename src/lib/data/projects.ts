@@ -41,12 +41,6 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   return projects.find((project) => project.slug === slug) ?? null;
 }
 
-export async function getProjectsByCategory(
-  category: ProjectCategory,
-): Promise<Project[]> {
-  return projects.filter((project) => project.category === category);
-}
-
 /** Everything a buyer would live in — BRD §5 "Residential portfolio". */
 export async function getResidentialProjects(): Promise<Project[]> {
   return projects.filter((project) =>

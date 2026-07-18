@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { getFeaturedProjects } from "@/lib/data/projects";
 import { navigation, siteConfig } from "@/lib/data/content";
+import { telHref } from "@/lib/whatsapp";
 
 /**
  * BRD Home blueprint §12 — Footer:
@@ -77,7 +78,7 @@ export async function Footer() {
 
             <address className="mt-8 space-y-3 text-sm not-italic">
               <a
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                href={telHref()}
                 className="flex items-center gap-3 transition-colors hover:text-gold-500"
               >
                 <Phone className="size-4 shrink-0 text-gold-500" aria-hidden="true" />
@@ -89,7 +90,9 @@ export async function Footer() {
                 className="flex items-center gap-3 transition-colors hover:text-gold-500"
               >
                 <Mail className="size-4 shrink-0 text-gold-500" aria-hidden="true" />
-                {siteConfig.email}
+                {/* An address has no spaces to break at, so it needs explicit
+                    permission to wrap or it widens the column. */}
+                <span className="break-all">{siteConfig.email}</span>
               </a>
 
               <p className="flex items-start gap-3">

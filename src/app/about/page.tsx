@@ -79,9 +79,12 @@ export default async function AboutPage() {
 
             {/* Credentials — static here; the animated counters stay on Home. */}
             <div>
+              {/* p-4 at base: two columns inside a 288px viewport leave ~96px
+                  of content per cell at p-6, which is not enough for the label
+                  and the figure to sit comfortably. */}
               <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-sm bg-border">
                 {stats.map((stat) => (
-                  <div key={stat.id} className="bg-navy-50 p-6 sm:p-8">
+                  <div key={stat.id} className="bg-navy-50 p-4 sm:p-8">
                     <dt className="eyebrow text-muted-foreground">
                       {stat.label}
                     </dt>

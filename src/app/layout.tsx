@@ -1,30 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
 import { buildKnowledgeSnapshot } from "@/features/chatbot/lib/knowledge";
 import { siteConfig } from "@/lib/data/content";
+import { organizationSchema, SITE_URL, websiteSchema } from "@/lib/schema";
+import { fontVariables } from "./fonts";
 import "./globals.css";
-
-/* Typography — a display serif for luxury headlines, a neutral sans for UI.
-   BRD §12: "Consistent typeface hierarchy for readability and brand consistency". */
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 /* BRD §7 SEO — meta tags, friendly URLs, structured data, social cards. */
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jmsgroup.co.in"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${siteConfig.name} — ${siteConfig.positioning}`,
     template: `%s | ${siteConfig.name}`,
@@ -38,9 +25,11 @@ export const metadata: Metadata = {
     "RERA approved",
     "JMS Group",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_IN",
+    url: "/",
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
@@ -50,7 +39,11 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default async function RootLayout({
@@ -60,37 +53,16 @@ export default async function RootLayout({
   // once, so it answers instantly with no API call and no external service.
   const knowledge = await buildKnowledgeSnapshot();
 
-  /* BRD §7 SEO — Organization structured data, so search engines resolve the
-     brand, its contact route and its verified social profiles. */
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    name: siteConfig.legalName,
-    alternateName: siteConfig.name,
-    url: "https://jmsgroup.co.in",
-    description: siteConfig.description,
-    foundingDate: String(siteConfig.foundedYear),
-    telephone: siteConfig.phone,
-    email: siteConfig.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "M3M Tee Point, 7th Floor, North Block, Sector 65",
-      addressLocality: "Gurugram",
-      addressRegion: "Haryana",
-      postalCode: "122018",
-      addressCountry: "IN",
-    },
-    areaServed: "Gurugram and the National Capital Region",
-    sameAs: siteConfig.social.map((social) => social.href),
-  };
-
   return (
     <html lang="en-IN">
-      <body className={`${playfair.variable} ${inter.variable} antialiased`}>
+      <body className={`${fontVariables} antialiased`}>
+        {/* BRD §7 SEO — the brand and the site as entities, emitted once here
+            so every page inherits them and pages only add what is specific to
+            them (a project, an article, a role). */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify([organizationSchema, websiteSchema]),
           }}
         />
 

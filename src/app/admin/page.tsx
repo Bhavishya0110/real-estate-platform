@@ -196,7 +196,13 @@ export default async function AdminDashboardPage() {
             <div className="flex items-center justify-between gap-3">
               <dt className="text-navy-400">Authentication</dt>
               <dd>
-                <AdminBadge tone="warning">Not enabled</AdminBadge>
+                <AdminBadge tone="success">Enabled</AdminBadge>
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <dt className="text-navy-400">Operator accounts</dt>
+              <dd>
+                <AdminBadge tone="warning">Environment</AdminBadge>
               </dd>
             </div>
           </dl>

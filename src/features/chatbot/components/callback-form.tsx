@@ -184,6 +184,12 @@ export function CallbackForm({
             "Request Call"
           )}
         </button>
+
+        {/* The spinner is visual only. This is what a screen reader hears, and
+            it is announced without moving focus away from the form. */}
+        <p aria-live="polite" className="sr-only">
+          {pending ? "Requesting your callback, please wait." : ""}
+        </p>
       </div>
     </form>
   );

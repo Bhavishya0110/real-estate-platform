@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import { ArrowRight, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+
+/* Without this the tab reads "404: This page could not be found" — Next's
+   default, and the one piece of the site that would not be ours. */
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  robots: { index: false, follow: true },
+};
 
 /**
  * Every route in the BRD sitemap resolves, so this is only reached by a mistyped

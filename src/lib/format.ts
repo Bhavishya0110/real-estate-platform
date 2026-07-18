@@ -23,11 +23,22 @@ export function formatNumber(value: number): string {
   return new Intl.NumberFormat("en-IN").format(value);
 }
 
-/** e.g. "28 June 2026". */
+const DATE = new Intl.DateTimeFormat("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  /* Pinned to UTC on purpose.
+     A date-only string like "2026-06-28" is parsed as UTC midnight, so a
+     browser west of Greenwich renders the *previous* day while the server
+     renders the intended one — a hydration mismatch on every dated card. These
+     are editorial publish dates, not moments in the reader's day, so rendering
+     them identically everywhere is both correct and stable. */
+  timeZone: "UTC",
+});
+
+/** e.g. "28 June 2026". Stable across server and client. */
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const date = new Date(iso);
+  // Never render "Invalid Date" to a visitor.
+  return Number.isNaN(date.getTime()) ? "" : DATE.format(date);
 }

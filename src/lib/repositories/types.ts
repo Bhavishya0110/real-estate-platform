@@ -77,6 +77,37 @@ export type CreateCallbackInput = Omit<
   "id" | "createdAt" | "status"
 >;
 
+/* ------------------------------------------------------------------- users */
+
+/**
+ * An operator who can sign in to the control panel.
+ *
+ * `passwordHash` never leaves the repository layer — `AdminUser` is what the
+ * rest of the app sees, and it deliberately has no password field at all, so
+ * there is no way to leak one into a component or a session token by accident.
+ */
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: import("@/features/auth/lib/roles").Role;
+  createdAt: string;
+}
+
+/**
+ * Read access to operator accounts, plus the one operation that needs the
+ * credential: verifying it.
+ *
+ * `verifyCredentials` lives on the repository rather than in a service because
+ * only the repository should ever hold a password hash. A Prisma implementation
+ * satisfies the same interface — the login action does not change.
+ */
+export interface UserRepository extends ReadRepository<AdminUser> {
+  findByEmail(email: string): Promise<AdminUser | null>;
+  /** Returns the user when the password matches, otherwise null. */
+  verifyCredentials(email: string, password: string): Promise<AdminUser | null>;
+}
+
 /* ------------------------------------------------------------ notifications */
 
 /**

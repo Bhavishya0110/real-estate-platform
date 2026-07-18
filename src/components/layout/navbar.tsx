@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "@/components/common/logo";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { navigation, siteConfig } from "@/lib/data/content";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { useDialog } from "@/lib/use-dialog";
+import { telHref, whatsappUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 /**
@@ -35,15 +36,14 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the drawer on navigation, and lock body scroll while it is open.
+  // Close the drawer on navigation.
   useEffect(() => setOpen(false), [pathname]);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  // The drawer covers the page and locks scrolling, so it owes a keyboard user
+  // the rest of the modal contract: Escape, a focus trap, and focus handed back
+  // to the hamburger on close.
+  const closeDrawer = useCallback(() => setOpen(false), []);
+  const drawerRef = useDialog<HTMLDivElement>({ open, onClose: closeDrawer });
 
   const solid = scrolled || !overlay || open;
 
@@ -99,7 +99,7 @@ export function Navbar() {
           {/* --- Desktop CTAs -------------------------------------------- */}
           <div className="hidden items-center gap-3 lg:flex">
             <a
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+              href={telHref()}
               className="inline-flex items-center gap-2 px-3 py-2 text-sm text-navy-100 transition-colors hover:text-gold-500"
             >
               <Phone className="size-4" aria-hidden="true" />
@@ -137,7 +137,11 @@ export function Navbar() {
           within whatever height is left below the bar rather than clipping. */}
       <div
         id="mobile-nav"
+        ref={drawerRef}
         hidden={!open}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
         className="max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain border-t border-white/10 bg-navy-900 sm:max-h-[calc(100svh-4.5rem)] lg:hidden"
       >
         <Container className="py-6">
@@ -166,7 +170,7 @@ export function Navbar() {
             </Button>
 
             <Button
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+              href={telHref()}
               variant="onDark"
               size="lg"
             >

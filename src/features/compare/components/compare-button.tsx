@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Scale } from "lucide-react";
+import { useTransientTimeout } from "@/lib/use-dialog";
 import { useLocalSet } from "@/lib/use-local-set";
 import { cn } from "@/lib/utils";
 import { COMPARE_KEY, COMPARE_LIMIT } from "@/features/favorites/lib/keys";
@@ -26,11 +27,15 @@ export function CompareButton({
   const [rejected, setRejected] = useState(false);
   const selected = has(slug);
 
+  // Cards unmount whenever a filter changes, and the hint outlives the card it
+  // belongs to — so the timer is owned by the component, not by the click.
+  const scheduleHintDismissal = useTransientTimeout();
+
   function handleClick() {
     const accepted = toggle(slug);
     if (!accepted) {
       setRejected(true);
-      window.setTimeout(() => setRejected(false), 2200);
+      scheduleHintDismissal(() => setRejected(false), 2200);
     }
   }
 

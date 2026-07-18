@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Bell,
   Building2,
@@ -29,6 +29,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { ADMIN_NAV, ADMIN_NAV_INDEX } from "../lib/navigation";
+import { SignOutButton } from "@/features/auth/components/sign-out-button";
+import { ROLE_LABELS } from "@/features/auth/lib/roles";
+import type { Session } from "@/features/auth/lib/session";
+import { useDialog } from "@/lib/use-dialog";
 import { cn } from "@/lib/utils";
 
 /**
@@ -64,20 +68,38 @@ const ICONS: Record<string, LucideIcon> = {
   ShieldCheck,
 };
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session;
+}) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Close the mobile drawer on navigation.
   useEffect(() => setSidebarOpen(false), [pathname]);
 
-  // Lock the page behind the drawer while it is open.
+  /* Above `lg` the sidebar is permanent furniture, not a drawer. Folding the
+     open flag down at that breakpoint stops a drawer opened on a phone from
+     leaving a focus trap around what is now just the page's navigation. */
   useEffect(() => {
-    document.body.style.overflow = sidebarOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    const desktop = window.matchMedia("(min-width: 64rem)");
+    const sync = () => {
+      if (desktop.matches) setSidebarOpen(false);
     };
-  }, [sidebarOpen]);
+
+    sync();
+    desktop.addEventListener("change", sync);
+    return () => desktop.removeEventListener("change", sync);
+  }, []);
+
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+  const sidebarRef = useDialog<HTMLElement>({
+    open: sidebarOpen,
+    onClose: closeSidebar,
+  });
 
   const crumbs = buildCrumbs(pathname);
 
@@ -85,9 +107,13 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div data-admin-root className="min-h-svh bg-[#0a1420] text-navy-100">
       {/* --- Sidebar ----------------------------------------------------- */}
       <aside
+        ref={sidebarRef}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-white/10 bg-navy-950 transition-transform duration-300 lg:translate-x-0",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r border-white/10 bg-navy-950 transition-transform duration-300 lg:translate-x-0 lg:visible",
+          /* `invisible` and not just the off-screen transform: translating a
+             panel out of view leaves every link inside it focusable, so a
+             keyboard user on a phone tabbed straight into a closed drawer. */
+          sidebarOpen ? "translate-x-0" : "invisible -translate-x-full",
         )}
         aria-label="Admin navigation"
       >
@@ -106,7 +132,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
           <button
             type="button"
-            onClick={() => setSidebarOpen(false)}
+            onClick={closeSidebar}
             aria-label="Close navigation"
             className="flex size-9 items-center justify-center rounded-sm text-navy-300 hover:bg-white/5 hover:text-white lg:hidden"
           >
@@ -170,10 +196,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
       {/* Scrim behind the mobile drawer */}
       {sidebarOpen ? (
-        <button
-          type="button"
-          aria-label="Close navigation"
-          onClick={() => setSidebarOpen(false)}
+        <div
+          aria-hidden="true"
+          onClick={closeSidebar}
           className="fixed inset-0 z-40 cursor-default bg-navy-950/70 backdrop-blur-sm lg:hidden"
         />
       ) : null}
@@ -220,24 +245,24 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <span className="absolute top-2 right-2 size-1.5 rounded-full bg-gold-500" />
             </button>
 
-            <button
-              type="button"
-              aria-label="Profile menu (coming soon)"
-              disabled
-              className="flex items-center gap-2 rounded-sm px-2 py-1.5 hover:bg-white/5 disabled:cursor-not-allowed"
-            >
-              <span className="flex size-8 items-center justify-center rounded-full bg-gold-500 font-display text-xs text-navy-900">
-                A
+            <div className="flex items-center gap-2 rounded-sm px-2 py-1.5">
+              <span
+                aria-hidden="true"
+                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gold-500 font-display text-xs text-navy-900"
+              >
+                {initials(session.name)}
               </span>
               <span className="hidden text-left sm:block">
-                <span className="block text-xs font-medium text-white">
-                  Admin
+                <span className="block max-w-[10rem] truncate text-xs font-medium text-white">
+                  {session.name}
                 </span>
                 <span className="block text-[10px] text-navy-400">
-                  Not signed in
+                  {ROLE_LABELS[session.role]}
                 </span>
               </span>
-            </button>
+            </div>
+
+            <SignOutButton />
           </div>
         </header>
 
@@ -276,6 +301,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </div>
     </div>
   );
+}
+
+/** Up to two initials from a display name, for the avatar. */
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+
+  return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : ""))
+    .toUpperCase();
 }
 
 /** Derives the trail from the path, naming known modules from the nav index. */

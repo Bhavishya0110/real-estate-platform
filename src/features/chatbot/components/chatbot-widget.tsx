@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, MessageSquare, Phone, PhoneCall, Send, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
+import { useDialog } from "@/lib/use-dialog";
+import { telHref } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { answer } from "../lib/engine";
 import type { BotReply, ChatMessage, KnowledgeSnapshot } from "../types";
@@ -27,9 +29,6 @@ const OPENING: BotReply = {
   ],
 };
 
-let messageId = 0;
-const nextId = () => `msg-${(messageId += 1)}`;
-
 export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -41,9 +40,13 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
   /** The question that went unanswered, carried into the callback request. */
   const [lastQuestion, setLastQuestion] = useState("");
 
-  const panelRef = useRef<HTMLDivElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+
+  /* Transcript ids are scoped to this instance. A module-level counter was
+     shared by every mount and never reset, so a remount could re-emit an id the
+     transcript was already using and collide React's keys. */
+  const messageId = useRef(0);
+  const nextId = () => `msg-${(messageId.current += 1)}`;
 
   // Keep the newest message in view.
   useEffect(() => {
@@ -51,17 +54,16 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
 
-  // Escape closes; focus moves into the panel when it opens.
-  useEffect(() => {
-    if (!open) return;
-    inputRef.current?.focus();
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  /* The assistant is a panel beside the page, not a layer over it: the page
+     stays scrollable and Tab is free to leave. It still owes Escape-to-close
+     and returning focus to the launcher, which is what this provides. */
+  const closePanel = useCallback(() => setOpen(false), []);
+  const panelRef = useDialog<HTMLDivElement>({
+    open,
+    onClose: closePanel,
+    lockScroll: false,
+    trapFocus: false,
+  });
 
   function send(text: string) {
     const trimmed = text.trim();
@@ -109,7 +111,7 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
 
             <button
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={closePanel}
               aria-label="Close assistant"
               className="flex size-9 items-center justify-center rounded-full text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
             >
@@ -132,7 +134,7 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
                   </p>
                 ) : (
                   <div className="max-w-[92%]">
-                    <p className="w-fit rounded-sm bg-white px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line text-navy-800 shadow-card">
+                    <p className="w-fit rounded-sm bg-white px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line text-navy-800 shadow-sm">
                       {message.reply.text}
                     </p>
 
@@ -259,7 +261,7 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
             </label>
             <input
               id="chatbot-input"
-              ref={inputRef}
+              data-autofocus
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder="Ask about a project, price or location…"
@@ -286,7 +288,7 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
               WhatsApp
             </a>
             <a
-              href={`tel:${knowledge.company.phone.replace(/\s/g, "")}`}
+              href={telHref(knowledge.company.phone)}
               className="inline-flex flex-1 items-center justify-center gap-2 rounded-sm border border-border bg-white px-3 py-2 text-xs font-medium text-navy-800 transition-colors hover:border-navy-900/40"
             >
               <Phone className="size-3.5" aria-hidden="true" />

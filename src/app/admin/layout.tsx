@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AdminShell } from "@/features/admin/components/admin-shell";
+import { requireSession } from "@/features/auth/lib/session";
 
 export const metadata: Metadata = {
   title: {
@@ -13,14 +14,18 @@ export const metadata: Metadata = {
 /**
  * Admin section layout.
  *
- * Authentication is deliberately not implemented yet — this is the shell the
- * auth layer will wrap. When it arrives, the session check belongs here, so
- * every admin route inherits it without touching a single page.
+ * The session check lives here, so every admin route inherits it without a
+ * single page having to remember. The middleware turns unauthenticated requests
+ * away earlier and more cheaply; this is the guard that still holds if the
+ * middleware matcher is ever narrowed by mistake, and it is what supplies the
+ * signed-in operator to the shell.
  */
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <AdminShell>{children}</AdminShell>;
+  const session = await requireSession();
+
+  return <AdminShell session={session}>{children}</AdminShell>;
 }

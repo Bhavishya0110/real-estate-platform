@@ -15,21 +15,38 @@ const ROTATE_MS = 6500;
 export function HighlightCarousel({ projects }: { projects: Project[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   const goTo = useCallback(
     (next: number) => setIndex(((next % projects.length) + projects.length) % projects.length),
     [projects.length],
   );
 
+  /* Read as state rather than inline, so turning the OS setting on stops a
+     carousel that is already running instead of waiting for a remount. */
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReducedMotion(query.matches);
+
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
   // Auto-rotate, but never fight the user: pause on hover/focus, and stop
   // entirely for anyone who prefers reduced motion.
   useEffect(() => {
-    if (paused || projects.length < 2) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (paused || reducedMotion || projects.length < 2) return;
 
-    const timer = setInterval(() => goTo(index + 1), ROTATE_MS);
+    /* Advancing from the previous value rather than from a captured `index`
+       keeps the interval out of the dependency list — otherwise every slide
+       change tore the timer down and restarted the clock. */
+    const timer = setInterval(
+      () => setIndex((current) => (current + 1) % projects.length),
+      ROTATE_MS,
+    );
     return () => clearInterval(timer);
-  }, [index, paused, projects.length, goTo]);
+  }, [paused, reducedMotion, projects.length]);
 
   const active = projects[index];
 

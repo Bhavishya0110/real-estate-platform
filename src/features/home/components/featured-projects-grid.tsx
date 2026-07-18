@@ -35,7 +35,7 @@ export function FeaturedProjectsGrid({
   return (
     <div className={className}>
       {/* --- Filter tabs -------------------------------------------------- */}
-      <div role="tablist" aria-label="Filter projects" className="flex flex-wrap gap-2">
+      <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-2">
         {TABS.map((option) => {
           const active = option === tab;
 
@@ -43,8 +43,7 @@ export function FeaturedProjectsGrid({
             <button
               key={option}
               type="button"
-              role="tab"
-              aria-selected={active}
+              aria-pressed={active}
               onClick={() => setTab(option)}
               className={cn(
                 "h-11 rounded-sm border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:px-5",

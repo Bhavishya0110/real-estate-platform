@@ -2,10 +2,12 @@ import {
   JsonCallbackRepository,
   JsonLeadRepository,
 } from "./leads.repository";
+import { EnvUserRepository } from "./users.repository";
 import type {
   CallbackRequest,
   Lead,
   NotificationService,
+  UserRepository,
 } from "./types";
 
 /**
@@ -25,6 +27,14 @@ import type {
 
 export const leadRepository = new JsonLeadRepository();
 export const callbackRepository = new JsonCallbackRepository();
+
+/**
+ * Operator accounts.
+ *
+ * Environment-configured today; `new PrismaUserRepository(prisma)` tomorrow,
+ * with no change to the login action or the admin layout.
+ */
+export const userRepository: UserRepository = new EnvUserRepository();
 
 /**
  * A notification service that records intent without sending anything.

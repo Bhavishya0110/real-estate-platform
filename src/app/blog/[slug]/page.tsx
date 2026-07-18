@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/data/content";
 import { formatDate } from "@/lib/format";
-import { breadcrumbSchema, SITE_URL } from "@/lib/schema";
+import { blogPostingSchema, breadcrumbSchema } from "@/lib/schema";
 
 /** Linked from the homepage teaser and the blog listing, so it must resolve. */
 export async function generateStaticParams() {
@@ -55,16 +55,7 @@ export default async function BlogPostPage({
 
   /* BRD §7 SEO — Article and breadcrumb structured data. */
   const schema = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: post.title,
-      description: post.excerpt,
-      datePublished: post.publishedAt,
-      author: { "@type": "Person", name: post.author },
-      publisher: { "@type": "Organization", name: "JMS Group" },
-      mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
-    },
+    blogPostingSchema(post),
     breadcrumbSchema([
       { name: "Home", path: "/" },
       { name: "Blog", path: "/blog" },

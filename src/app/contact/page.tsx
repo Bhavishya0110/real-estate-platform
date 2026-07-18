@@ -7,7 +7,7 @@ import { Container, Section } from "@/components/ui/container";
 import { EnquiryForm } from "@/features/contact/components/enquiry-form";
 import { siteConfig } from "@/lib/data/content";
 import { getProjects } from "@/lib/data/projects";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { telHref, whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -72,7 +72,7 @@ export default async function ContactPage() {
                   </p>
 
                   <a
-                    href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                    href={telHref()}
                     className="flex items-start gap-3 text-navy-200 transition-colors hover:text-gold-500"
                   >
                     <Phone

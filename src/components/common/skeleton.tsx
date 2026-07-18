@@ -1,7 +1,11 @@
 import { cn } from "@/lib/utils";
 
+/* `PageSkeleton` is the only thing this module offers the rest of the app. The
+   two pieces below build it and are deliberately not exported — an export
+   nobody imports reads as a supported API and invites drift. */
+
 /** A shimmering placeholder block. Purely decorative — hidden from screen readers. */
-export function Skeleton({ className }: { className?: string }) {
+function Skeleton({ className }: { className?: string }) {
   return (
     <div
       aria-hidden="true"
@@ -11,7 +15,7 @@ export function Skeleton({ className }: { className?: string }) {
 }
 
 /** Matches the footprint of a ProjectCard so the grid does not jump on load. */
-export function ProjectCardSkeleton() {
+function ProjectCardSkeleton() {
   return (
     <div className="overflow-hidden rounded-sm border border-border bg-white">
       <Skeleton className="aspect-4/3 rounded-none" />

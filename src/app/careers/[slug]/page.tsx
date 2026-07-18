@@ -6,6 +6,7 @@ import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { getJobBySlug, getJobs, siteConfig } from "@/lib/data/content";
+import { breadcrumbSchema, jobPostingSchema } from "@/lib/schema";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 /** Linked from the homepage teaser and the careers listing. */
@@ -43,8 +44,23 @@ export default async function JobPage({
 
   const applySubject = encodeURIComponent(`Application — ${job.title}`);
 
+  /* BRD §7 SEO — a job rich result carries the role straight into search. */
+  const schema = [
+    jobPostingSchema(job),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Careers", path: "/careers" },
+      { name: job.title, path: `/careers/${job.slug}` },
+    ]),
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+
       <PageHero
         eyebrow={`${job.department} · ${job.type}`}
         title={job.title}

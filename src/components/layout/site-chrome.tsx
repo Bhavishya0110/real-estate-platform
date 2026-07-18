@@ -12,9 +12,15 @@ import { usePathname } from "next/navigation";
  * this wrapper achieves the same separation without restructuring every existing
  * route, and keeps the rule in one readable place.
  */
+/** Routes that supply their own shell and must not inherit the marketing one. */
+function isBareRoute(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return pathname.startsWith("/admin") || pathname === "/login";
+}
+
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
+  if (isBareRoute(pathname)) return null;
 
   // `data-site-chrome` is the hook for the CSS rule in globals.css that hides
   // this at first paint when an admin shell is present. Belt and braces: the

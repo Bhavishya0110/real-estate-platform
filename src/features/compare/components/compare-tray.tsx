@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Scale, X } from "lucide-react";
 import { ProjectMedia } from "@/components/common/project-media";
 import { Badge, StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useDialog } from "@/lib/use-dialog";
 import { useLocalSet } from "@/lib/use-local-set";
 import { COMPARE_KEY, COMPARE_LIMIT } from "@/features/favorites/lib/keys";
 import { projectEnquiryUrl } from "@/lib/whatsapp";
@@ -36,7 +37,6 @@ const ROWS: { label: string; value: (project: Project) => string }[] = [
 export function CompareTray({ projects }: { projects: Project[] }) {
   const { items, ready, remove, clear } = useLocalSet(COMPARE_KEY, COMPARE_LIMIT);
   const [open, setOpen] = useState(false);
-  const closeRef = useRef<HTMLButtonElement>(null);
 
   const selected = useMemo(
     () => items
@@ -45,25 +45,25 @@ export function CompareTray({ projects }: { projects: Project[] }) {
     [items, projects],
   );
 
-  // Close on Escape, lock the page behind the dialog, and move focus into it.
+  // There is nothing to compare below two projects, so the dialog is only ever
+  // open when the selection can actually fill it. Deriving this rather than
+  // trusting `open` alone is what stops the dialog reappearing by itself after
+  // the user empties it from the inside.
+  const comparable = selected.length >= 2;
+  const dialogOpen = open && comparable;
+
+  const close = useCallback(() => setOpen(false), []);
+  const dialogRef = useDialog<HTMLDivElement>({ open: dialogOpen, onClose: close });
+
+  // Removing projects from inside the dialog can empty it. Fold the open flag
+  // back down so the next selection starts closed.
   useEffect(() => {
-    if (!open) return;
-
-    closeRef.current?.focus();
-    document.body.style.overflow = "hidden";
-
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+    if (!comparable) setOpen(false);
+  }, [comparable]);
 
   // Nothing selected (or storage not read yet) → stay out of the way entirely.
+  // Every hook above runs unconditionally, so the scroll lock is always
+  // released on the way out rather than being stranded on `<body>`.
   if (!ready || selected.length === 0) return null;
 
   return (
@@ -113,31 +113,35 @@ export function CompareTray({ projects }: { projects: Project[] }) {
       </div>
 
       {/* --- Comparison dialog -------------------------------------------- */}
-      {open ? (
+      {dialogOpen ? (
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Project comparison"
           className="fixed inset-0 z-50 flex items-end justify-center bg-navy-950/70 p-0 backdrop-blur-sm sm:items-center sm:p-6"
         >
-          {/* Click-outside to dismiss. */}
-          <button
-            type="button"
-            aria-label="Close comparison"
-            onClick={() => setOpen(false)}
+          {/* Click-outside to dismiss. Presentational rather than a button: the
+              header X is the accessible way out, and a full-screen control in
+              the tab order announces itself for no benefit. */}
+          <div
+            aria-hidden="true"
+            onClick={close}
             className="absolute inset-0 cursor-default"
           />
 
-          <div className="relative flex max-h-[92svh] w-full max-w-5xl flex-col overflow-hidden rounded-t-sm bg-white sm:rounded-sm">
+          <div
+            ref={dialogRef}
+            className="relative flex max-h-[92svh] w-full max-w-5xl flex-col overflow-hidden rounded-t-sm bg-white sm:rounded-sm"
+          >
             <header className="flex items-center justify-between gap-4 border-b border-border p-5 sm:p-6">
               <h2 className="font-display text-xl text-navy-900 sm:text-2xl">
                 Side by side
               </h2>
 
               <button
-                ref={closeRef}
+                data-autofocus
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 aria-label="Close comparison"
                 className="flex size-10 items-center justify-center rounded-full border border-border text-navy-700 transition-colors hover:bg-navy-50"
               >

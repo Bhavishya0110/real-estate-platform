@@ -29,7 +29,7 @@ export const metadata: Metadata = {
  *   08 Testimonials ......... <Testimonials />
  *   09 Blog & Insights ...... <BlogTeaser />
  *   10 Career Teaser ........ <CareerTeaser />
- *   11 Chatbot Bubble ....... <FloatingActions />  (root layout)
+ *   11 Chatbot Bubble ....... <ChatbotWidget />    (root layout)
  *   12 Footer ............... <Footer />           (root layout)
  *
  * Every section is a server component reading from the repository layer, so the

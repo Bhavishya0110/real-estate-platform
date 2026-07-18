@@ -121,7 +121,7 @@ export function ProjectBrowser({
       <div className="mt-6 flex flex-col gap-5 border-b border-border pb-6">
         {showTabs ? (
           <div
-            role="tablist"
+            role="group"
             aria-label="Filter by category"
             className="flex flex-wrap gap-2"
           >
@@ -306,8 +306,7 @@ function CategoryTab({
   return (
     <button
       type="button"
-      role="tab"
-      aria-selected={active}
+      aria-pressed={active}
       onClick={onClick}
       className={cn(
         "h-11 rounded-sm border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:px-5",

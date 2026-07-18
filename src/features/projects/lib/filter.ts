@@ -65,7 +65,7 @@ function matchesBhk(project: Project, bhk: string): boolean {
  * narrows rather than widens. Deliberately simple and dependency-free — the
  * corpus is fourteen records, so an index would be over-engineering.
  */
-export function matchesQuery(project: Project, query: string): boolean {
+function matchesQuery(project: Project, query: string): boolean {
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (terms.length === 0) return true;
 

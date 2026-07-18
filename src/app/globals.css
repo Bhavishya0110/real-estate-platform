@@ -42,9 +42,15 @@
   --color-muted-foreground: #5b6b7c;
   --color-border: #e6eaef;
 
-  /* --- Typography ---------------------------------------------------- */
-  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* --- Typography ----------------------------------------------------
+     Each family lists its latin face first and its latin-ext face second.
+     The browser resolves per character, so letters come from the small
+     primary file and ₹ (U+20B9, extended-only) comes from the second —
+     see src/app/fonts/index.ts. */
+  --font-display: var(--font-playfair), var(--font-playfair-ext), Georgia,
+    "Times New Roman", serif;
+  --font-sans: var(--font-inter), var(--font-inter-ext), ui-sans-serif,
+    system-ui, sans-serif;
 
   /* --- Elevation ----------------------------------------------------- */
   --shadow-luxe: 0 20px 50px -12px rgb(13 27 42 / 0.18);
@@ -52,7 +58,6 @@
 
   /* --- Motion --------------------------------------------------------- */
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-marquee: marquee 32s linear infinite;
 }
 
 @keyframes fade-up {
@@ -63,15 +68,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
   }
 }
 
@@ -162,7 +158,8 @@
    wrong UI, and the public site stays statically rendered.
    ===================================================================== */
 
-body:has([data-admin-root]) [data-site-chrome] {
+body:has([data-admin-root]) [data-site-chrome],
+body:has([data-bare-root]) [data-site-chrome] {
   display: none !important;
 }
 
