@@ -20,6 +20,7 @@ import {
   getProjects,
   getRelatedProjects,
 } from "@/lib/data/projects";
+import { breadcrumbSchema, projectSchema } from "@/lib/schema";
 import { projectEnquiryUrl } from "@/lib/whatsapp";
 
 /**
@@ -73,8 +74,23 @@ export default async function ProjectDetailPage({
     `${project.name}, ${project.location}, ${project.city}`,
   );
 
+  /* BRD §7 SEO — project and breadcrumb structured data. */
+  const schema = [
+    projectSchema(project),
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Projects", path: "/projects" },
+      { name: project.name, path: `/projects/${project.slug}` },
+    ]),
+  ];
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+
       <ProjectHero project={project} />
 
       {/* --- Key facts ---------------------------------------------------- */}

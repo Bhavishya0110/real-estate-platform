@@ -1,23 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { AlertCircle, Send } from "lucide-react";
+import { useState, useTransition } from "react";
+import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/lib/data/content";
+import { submitEnquiry } from "@/lib/actions/leads";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
 /**
  * BRD §5 Contact — "Submit enquiry, validate mandatory fields".
  *
- * There is no backend yet (CRM push is a later integration), so rather than
- * accepting a submission and quietly dropping it, this form validates the input
- * and then *delivers* it: the composed enquiry is handed to WhatsApp — or email
- * as a fallback — so the lead genuinely reaches the sales desk. The user is told
- * exactly what is happening, which a fake "thanks, we'll be in touch" would not.
+ * Submits through a server action into the lead repository. The client validates
+ * first for a fast, kind experience; the server validates again because client
+ * checks are a convenience, not a guarantee.
  *
- * When the CRM endpoint lands, only `handleSubmit` changes.
+ * WhatsApp remains available as a parallel route, not a substitute — some people
+ * simply prefer it.
  */
 
 interface Fields {
@@ -47,9 +46,9 @@ function validate(fields: Fields): Errors {
   if (!digits) errors.phone = "A phone number lets us call you back.";
   else if (digits.length < 10) errors.phone = "That number looks too short.";
 
-  if (!fields.email.trim()) errors.email = "Please add an email address.";
-  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
+  if (fields.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
     errors.email = "That email address does not look right.";
+  }
 
   return errors;
 }
@@ -57,7 +56,9 @@ function validate(fields: Fields): Errors {
 export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
   const [fields, setFields] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
+  const [pending, startTransition] = useTransition();
 
   function update(key: keyof Fields) {
     return (
@@ -67,53 +68,70 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
     ) => {
       setFields((current) => ({ ...current, [key]: event.target.value }));
       setErrors((current) => ({ ...current, [key]: undefined }));
+      if (status !== "idle") setStatus("idle");
     };
-  }
-
-  /** The enquiry, formatted for a human reading it on a phone. */
-  function composeMessage() {
-    return [
-      "New enquiry from the JMS Group website",
-      `Name: ${fields.name}`,
-      `Phone: ${fields.phone}`,
-      `Email: ${fields.email}`,
-      fields.interest ? `Interested in: ${fields.interest}` : null,
-      fields.message ? `Message: ${fields.message}` : null,
-    ]
-      .filter(Boolean)
-      .join("\n");
   }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    if (pending) return;
 
     const found = validate(fields);
     setErrors(found);
-    if (Object.keys(found).length > 0) return;
+    if (Object.keys(found).length > 0) {
+      setStatus("error");
+      setFeedback("Please check the highlighted fields.");
+      return;
+    }
 
-    window.open(whatsappUrl(composeMessage()), "_blank", "noopener,noreferrer");
-    setSent(true);
+    startTransition(async () => {
+      const result = await submitEnquiry({
+        source: "contact-form",
+        name: fields.name.trim(),
+        phone: fields.phone.trim(),
+        email: fields.email.trim() || undefined,
+        interest: fields.interest || undefined,
+        message: fields.message.trim() || undefined,
+      });
+
+      if (result.ok) {
+        setStatus("success");
+        setFeedback(result.message ?? "Thank you — we have your enquiry.");
+        // Reset only on success, so a failure never destroys their typing.
+        setFields(EMPTY);
+        setErrors({});
+      } else {
+        setStatus("error");
+        setErrors(result.errors ?? {});
+        setFeedback(result.message ?? "Something went wrong. Please try again.");
+      }
+    });
   }
 
-  const mailtoHref = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
-    "Website enquiry",
-  )}&body=${encodeURIComponent(composeMessage())}`;
-
-  if (sent) {
+  /* --- Success ------------------------------------------------------------ */
+  if (status === "success") {
     return (
-      <div className="rounded-sm border border-border bg-navy-50 p-8 sm:p-10">
-        <h2 className="font-display text-2xl text-navy-900">
-          Your enquiry is ready to send.
+      <div
+        role="status"
+        className="rounded-sm border border-emerald-600/30 bg-emerald-50 p-8 sm:p-10"
+      >
+        <span className="flex size-12 items-center justify-center rounded-full bg-emerald-600 text-white">
+          <CheckCircle2 className="size-6" aria-hidden="true" />
+        </span>
+
+        <h2 className="mt-6 font-display text-2xl text-navy-900">
+          Enquiry received.
         </h2>
-        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          We opened WhatsApp with your details filled in — press send there and it
-          reaches the sales desk straight away. If the window did not open, use
-          either option below.
+        <p className="mt-3 text-sm leading-relaxed text-navy-700">
+          {feedback} An advisor will be in touch — usually within the hour during
+          business hours.
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Button
-            href={whatsappUrl(composeMessage())}
+            href={whatsappUrl(
+              "Hi JMS Group, I just submitted an enquiry on your website.",
+            )}
             target="_blank"
             rel="noopener noreferrer"
             variant="gold"
@@ -121,28 +139,23 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
             className="w-full sm:w-auto"
           >
             <WhatsAppIcon className="size-4" />
-            Open WhatsApp Again
+            Continue on WhatsApp
           </Button>
 
-          <Button href={mailtoHref} variant="outline" size="lg" className="w-full sm:w-auto">
-            Send by Email Instead
+          <Button
+            onClick={() => setStatus("idle")}
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto"
+          >
+            Send another enquiry
           </Button>
         </div>
-
-        <button
-          type="button"
-          onClick={() => {
-            setFields(EMPTY);
-            setSent(false);
-          }}
-          className="mt-6 text-sm font-medium text-gold-600 underline-offset-4 hover:underline"
-        >
-          Send another enquiry
-        </button>
       </div>
     );
   }
 
+  /* --- Form --------------------------------------------------------------- */
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid gap-6 sm:grid-cols-2">
@@ -150,6 +163,7 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
           id="enquiry-name"
           label="Your name"
           required
+          disabled={pending}
           value={fields.name}
           onChange={update("name")}
           error={errors.name}
@@ -161,6 +175,7 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
           label="Phone number"
           required
           type="tel"
+          disabled={pending}
           value={fields.phone}
           onChange={update("phone")}
           error={errors.phone}
@@ -171,15 +186,14 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
       <Field
         id="enquiry-email"
         label="Email address"
-        required
         type="email"
+        disabled={pending}
         value={fields.email}
         onChange={update("email")}
         error={errors.email}
         autoComplete="email"
       />
 
-      {/* --- Project interest ------------------------------------------- */}
       <label className="flex flex-col gap-2">
         <span className="text-sm font-medium text-navy-800">
           Which project are you interested in?
@@ -187,7 +201,8 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
         <select
           value={fields.interest}
           onChange={update("interest")}
-          className="h-12 rounded-sm border border-border bg-white px-4 text-sm text-navy-900 focus:border-gold-500 focus:outline-none"
+          disabled={pending}
+          className="h-12 rounded-sm border border-border bg-white px-4 text-sm text-navy-900 focus:border-gold-500 focus:outline-none disabled:opacity-60"
         >
           <option value="">Not sure yet — advise me</option>
           {projectNames.map((name) => (
@@ -198,7 +213,6 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
         </select>
       </label>
 
-      {/* --- Message ------------------------------------------------------ */}
       <label className="flex flex-col gap-2">
         <span className="text-sm font-medium text-navy-800">
           Anything you want us to know?
@@ -206,23 +220,66 @@ export function EnquiryForm({ projectNames }: { projectNames: string[] }) {
         <textarea
           value={fields.message}
           onChange={update("message")}
+          disabled={pending}
           rows={4}
           placeholder="Budget, preferred location, timeline…"
-          className="rounded-sm border border-border bg-white p-4 text-sm text-navy-900 placeholder:text-muted-foreground focus:border-gold-500 focus:outline-none"
+          className="rounded-sm border border-border bg-white p-4 text-sm text-navy-900 placeholder:text-muted-foreground focus:border-gold-500 focus:outline-none disabled:opacity-60"
         />
       </label>
 
+      {/* --- Error banner ---------------------------------------------------- */}
+      {status === "error" && feedback ? (
+        <p
+          role="alert"
+          className="flex items-start gap-2 rounded-sm border border-red-500/30 bg-red-50 p-4 text-sm text-red-700"
+        >
+          <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          {feedback}
+        </p>
+      ) : null}
+
       <div className="flex flex-col gap-4">
-        <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto">
-          <Send className="size-4" aria-hidden="true" />
-          Send Enquiry
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          disabled={pending}
+          className="w-full sm:w-auto"
+        >
+          {pending ? (
+            <>
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              Sending…
+            </>
+          ) : (
+            <>
+              <Send className="size-4" aria-hidden="true" />
+              Send Enquiry
+            </>
+          )}
         </Button>
 
+        {/* Announced to assistive tech without stealing focus. */}
+        <span aria-live="polite" className="sr-only">
+          {pending ? "Sending your enquiry" : ""}
+        </span>
+
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Your details go straight to our sales desk over WhatsApp. We do not sell
-          your data — see our{" "}
-          <a href="/privacy" className="text-gold-600 underline-offset-4 hover:underline">
+          We do not sell your data — see our{" "}
+          <a
+            href="/privacy"
+            className="text-gold-600 underline-offset-4 hover:underline"
+          >
             privacy policy
+          </a>
+          . Prefer WhatsApp?{" "}
+          <a
+            href={whatsappUrl("Hi JMS Group, I'd like to speak to an advisor.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold-600 underline-offset-4 hover:underline"
+          >
+            Message us instead
           </a>
           .
         </p>
@@ -261,7 +318,7 @@ function Field({
         aria-describedby={error ? `${id}-error` : undefined}
         {...props}
         className={cn(
-          "h-12 rounded-sm border bg-white px-4 text-sm text-navy-900 focus:outline-none",
+          "h-12 rounded-sm border bg-white px-4 text-sm text-navy-900 focus:outline-none disabled:opacity-60",
           error
             ? "border-red-500 focus:border-red-500"
             : "border-border focus:border-gold-500",

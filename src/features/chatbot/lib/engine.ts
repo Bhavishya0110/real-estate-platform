@@ -352,9 +352,9 @@ export function answer(input: string, snapshot: KnowledgeSnapshot): BotReply {
   }
 
   /* --- Honest miss -------------------------------------------------------- */
+  // No guessing. The widget turns `unanswered` into the two escalation actions.
   return {
-    text: "I don't have that in our project data, so I would rather not guess. I can help with our projects, prices, locations, amenities, possession dates, EMI and site visits — or put you straight through to an advisor who can answer anything I cannot.",
-    actions: CONTACT_ACTIONS(snapshot),
+    text: "I couldn't find the exact answer.\n\nI only answer from our own project data, so I would rather not guess. An advisor can help with anything I cannot — or ask me about our projects, prices, locations, amenities, possession dates, EMI and site visits.",
     suggestions: DEFAULT_SUGGESTIONS,
     unanswered: true,
   };

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, MessageSquare, Phone, Send, X } from "lucide-react";
+import { ArrowRight, MessageSquare, Phone, PhoneCall, Send, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { cn } from "@/lib/utils";
 import { answer } from "../lib/engine";
 import type { BotReply, ChatMessage, KnowledgeSnapshot } from "../types";
+import { CallbackForm } from "./callback-form";
 
 /**
  * BRD Home blueprint §11 — the floating assistant, present on every page.
@@ -35,6 +36,10 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { id: "msg-0", role: "assistant", reply: OPENING },
   ]);
+  /** Which unanswered message has its callback form expanded. */
+  const [callbackFor, setCallbackFor] = useState<string | null>(null);
+  /** The question that went unanswered, carried into the callback request. */
+  const [lastQuestion, setLastQuestion] = useState("");
 
   const panelRef = useRef<HTMLDivElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -61,6 +66,9 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
   function send(text: string) {
     const trimmed = text.trim();
     if (!trimmed) return;
+
+    setLastQuestion(trimmed);
+    setCallbackFor(null);
 
     setMessages((current) => [
       ...current,
@@ -180,6 +188,39 @@ export function ChatbotWidget({ knowledge }: { knowledge: KnowledgeSnapshot }) {
                               {action.label}
                             </Link>
                           ),
+                        )}
+                      </div>
+                    ) : null}
+
+                    {/* --- Escalation, when the assistant could not answer --- */}
+                    {message.reply.unanswered ? (
+                      <div className="mt-3">
+                        {callbackFor === message.id ? (
+                          <CallbackForm
+                            unansweredQuestion={lastQuestion}
+                            onDone={() => setCallbackFor(null)}
+                          />
+                        ) : (
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            <button
+                              type="button"
+                              onClick={() => setCallbackFor(message.id)}
+                              className="flex items-center justify-center gap-2 rounded-sm bg-navy-900 px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-navy-800"
+                            >
+                              <PhoneCall className="size-3.5" aria-hidden="true" />
+                              Schedule a Call
+                            </button>
+
+                            <a
+                              href={whatsappHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-2 rounded-sm bg-gold-500 px-3 py-2.5 text-xs font-semibold text-navy-900 transition-colors hover:bg-gold-400"
+                            >
+                              <WhatsAppIcon className="size-3.5" />
+                              Continue on WhatsApp
+                            </a>
+                          </div>
                         )}
                       </div>
                     ) : null}

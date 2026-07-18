@@ -153,6 +153,19 @@
   );
 }
 
+/* =====================================================================
+   ADMIN / SITE CHROME SEPARATION
+
+   The admin panel supplies its own shell, so the marketing header, footer and
+   customer assistant must not appear inside it. `usePathname()` cannot run
+   before hydration, so this hides them at first paint instead — no flash of the
+   wrong UI, and the public site stays statically rendered.
+   ===================================================================== */
+
+body:has([data-admin-root]) [data-site-chrome] {
+  display: none !important;
+}
+
 /* Respect users who prefer reduced motion — BRD §7 Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Runtime data captured by the JSON repositories (leads, callback requests).
+# Real submissions — never committed. Replaced by PostgreSQL.
+/data-runtime/
