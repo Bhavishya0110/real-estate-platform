@@ -63,6 +63,12 @@ export interface Testimonial {
   avatarInitials: string;
 }
 
+/** One section of article body copy. */
+export interface ArticleSection {
+  heading: string;
+  body: string;
+}
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -72,6 +78,7 @@ export interface BlogPost {
   author: string;
   publishedAt: string;
   readTimeMinutes: number;
+  content: ArticleSection[];
 }
 
 export interface Job {
@@ -82,6 +89,29 @@ export interface Job {
   type: "Full-time" | "Part-time" | "Contract";
   location: string;
   experience: string;
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+}
+
+export interface FaqItem {
+  id: string;
+  category: string;
+  question: string;
+  answer: string;
+}
+
+export interface LegalSection {
+  id: string;
+  heading: string;
+  body: string;
+  /** Optional bullet list rendered under the body. */
+  items?: string[];
+}
+
+export interface LegalDocument {
+  lastUpdated: string;
+  sections: LegalSection[];
 }
 
 export interface Stat {

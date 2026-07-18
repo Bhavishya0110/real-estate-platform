@@ -1,0 +1,86 @@
+[
+  {
+    "id": "faq-01",
+    "category": "Booking",
+    "question": "What do I need to book a unit?",
+    "answer": "A booking form, KYC documents (PAN and Aadhaar) and the booking amount stated on the price sheet. Nothing else is payable at this stage, and the booking amount is adjusted against your first instalment."
+  },
+  {
+    "id": "faq-02",
+    "category": "Booking",
+    "question": "Is the booking amount refundable?",
+    "answer": "Pre-launch pre-registrations are fully refundable until you convert to a firm booking. After that, refunds follow the cancellation clause in your allotment letter, which we walk you through before you sign."
+  },
+  {
+    "id": "faq-03",
+    "category": "Booking",
+    "question": "Can I choose my floor and unit?",
+    "answer": "Yes, subject to availability at the time of booking. Early bookings get first pick, which is the main practical advantage of a pre-launch window."
+  },
+  {
+    "id": "faq-04",
+    "category": "Pricing",
+    "question": "Is the price on the website the final price?",
+    "answer": "The figure shown is the starting price for that project. Your final cost depends on the unit, floor and facing you choose, plus statutory charges. Everything appears on one price sheet — there are no floor-rise surprises added later."
+  },
+  {
+    "id": "faq-05",
+    "category": "Pricing",
+    "question": "What is not included in the quoted price?",
+    "answer": "Stamp duty, registration charges, GST and any interior work sit outside the quoted price. We list these separately so you can budget for the true cost of ownership rather than just the headline number."
+  },
+  {
+    "id": "faq-06",
+    "category": "Pricing",
+    "question": "Do you negotiate on price?",
+    "answer": "No. Every buyer sees the same sheet on the same day. We would rather price it correctly once than run a negotiation theatre where the best-informed buyer wins."
+  },
+  {
+    "id": "faq-07",
+    "category": "Home Loans",
+    "question": "Which banks have approved your projects?",
+    "answer": "Our projects are approved with all major public and private lenders. The sales desk can share the current approved-lender list for the specific project you are considering."
+  },
+  {
+    "id": "faq-08",
+    "category": "Home Loans",
+    "question": "How accurate is the EMI calculator?",
+    "answer": "The calculation itself is exact — standard reducing-balance EMI. What varies is your actual interest rate, which depends on the lender's credit assessment. Treat the default rate as indicative, not a quote."
+  },
+  {
+    "id": "faq-09",
+    "category": "Possession",
+    "question": "What happens if possession is delayed?",
+    "answer": "Your agreement carries a committed possession date and the compensation payable if we miss it, exactly as RERA requires. We publish construction progress so you can see where a project actually stands."
+  },
+  {
+    "id": "faq-10",
+    "category": "Possession",
+    "question": "What is covered after handover?",
+    "answer": "A five-year structural warranty, plus a defect-liability period for fittings as specified in your agreement. A named relationship manager stays with you from booking through handover and beyond."
+  },
+  {
+    "id": "faq-11",
+    "category": "RERA & Legal",
+    "question": "Are your projects RERA registered?",
+    "answer": "Yes. Every project is registered with the Haryana Real Estate Regulatory Authority before we market it. The registration number for a given project is issued with its price sheet and printed on the brochure."
+  },
+  {
+    "id": "faq-12",
+    "category": "RERA & Legal",
+    "question": "Is the land title clear?",
+    "answer": "Yes, and we will share the title report. For plotted developments in particular we encourage buyers to have their own advocate review it — we have never had a reason to discourage that."
+  },
+  {
+    "id": "faq-13",
+    "category": "Site Visits",
+    "question": "Can I visit the site before booking?",
+    "answer": "Please do. We would rather you saw the structure, the finish level and the neighbourhood in person. Site visits can be arranged any day of the week, including weekends."
+  },
+  {
+    "id": "faq-14",
+    "category": "Site Visits",
+    "question": "I am not in Gurugram. What are my options?",
+    "answer": "Seven of our projects have a 360° virtual tour, and we run guided live tours over video with an advisor walking the site for you in real time."
+  }
+]

@@ -7,7 +7,25 @@
     "category": "Market Trends",
     "author": "Anand Mehta",
     "publishedAt": "2026-06-28",
-    "readTimeMinutes": 7
+    "readTimeMinutes": 7,
+    "content": [
+      {
+        "heading": "Infrastructure moves first, prices follow",
+        "body": "Every price cycle in Gurugram has started the same way: a road opens, commute times fall, and the land within twenty minutes of the new artery reprices over the following thirty-six months. The Dwarka Expressway is the clearest current example. Sectors that were considered peripheral in 2019 now sit inside a comfortable commute of both Delhi and Cyber City."
+      },
+      {
+        "heading": "What has already repriced",
+        "body": "The stretch along Golf Course Extension Road has largely completed its move. Buyers looking there today are paying for infrastructure that already exists, which is a perfectly reasonable thing to do — but it is not where the remaining upside sits. The same is true of the established Golf Course Road corridor, where scarcity rather than growth now sets the price."
+      },
+      {
+        "heading": "Where we think value remains",
+        "body": "Three pockets still look mispriced relative to where connectivity will be in three years: the New Gurugram sectors around 84 to 92, the Sohna corridor as the elevated road matures, and selected Dwarka Expressway sectors where possession-ready stock is still thin. In each case the infrastructure is committed and funded rather than merely announced — which is the distinction that matters."
+      },
+      {
+        "heading": "How to read a corridor honestly",
+        "body": "Ask three questions before you buy a growth story. Is the infrastructure funded, or only announced? Is there employment moving in, or only housing? And is there enough completed stock nearby that you could exit if you needed to? A corridor that fails the third test can look excellent on paper and still leave you illiquid."
+      }
+    ]
   },
   {
     "id": "blg-02",
@@ -17,7 +35,29 @@
     "category": "Buying Guide",
     "author": "Priya Nair",
     "publishedAt": "2026-06-14",
-    "readTimeMinutes": 9
+    "readTimeMinutes": 9,
+    "content": [
+      {
+        "heading": "The EMI is the least interesting number",
+        "body": "Most buyers shop for a monthly figure they can carry. That is understandable, and it is also how people end up with a thirty-year tenure they never intended. The EMI tells you what leaves your account each month; it tells you almost nothing about what the loan costs you in total."
+      },
+      {
+        "heading": "Compute the total interest first",
+        "body": "On a ₹1 crore loan at 8.5% over twenty years, you will repay roughly ₹2.08 crore. More than half of what you hand the bank is interest. Extending that tenure to thirty years lowers the monthly figure by a comfortable-looking amount and adds a great deal to the total. Run both numbers before you choose a tenure, not after."
+      },
+      {
+        "heading": "The costs that sit outside the loan",
+        "body": "Stamp duty, registration, GST where applicable, processing fees, legal charges and interiors are not funded by your home loan. Budget for them in cash. This is the single most common reason a purchase becomes stressful in month one — the buyer modelled the EMI correctly and forgot everything around it."
+      },
+      {
+        "heading": "Two questions lenders rarely volunteer",
+        "body": "First, is the rate fixed or floating, and what is it benchmarked against? Second, what does prepayment actually cost you? On floating-rate loans to individuals, prepayment penalties are generally not permitted — and prepaying early, when the interest component is at its highest, is the most effective lever you have."
+      },
+      {
+        "heading": "A sensible sequence",
+        "body": "Get a sanction in principle before you shortlist, not after. It tells you your real budget, strengthens your position, and means the paperwork is largely done when you find something you want."
+      }
+    ]
   },
   {
     "id": "blg-03",
@@ -27,6 +67,24 @@
     "category": "Project Updates",
     "author": "Anand Mehta",
     "publishedAt": "2026-05-30",
-    "readTimeMinutes": 6
+    "readTimeMinutes": 6,
+    "content": [
+      {
+        "heading": "What registration actually means",
+        "body": "A RERA registration number means the project's approvals, land title and committed timeline have been filed with the regulator, and that sales proceeds must largely be held in a dedicated account for that project. It is a meaningful constraint on how a developer can behave with your money."
+      },
+      {
+        "heading": "The three clauses worth reading",
+        "body": "First, the committed possession date and the compensation payable if it is missed. Second, the carpet-area definition — RERA standardised this precisely because it used to be the easiest place to mislead. Third, the specification annexure, which governs what you are actually being handed at possession."
+      },
+      {
+        "heading": "What it does not do",
+        "body": "RERA does not guarantee your investment will appreciate, does not vet whether the price is fair, and does not remove the need for your own legal review — particularly on plotted developments. It regulates conduct and disclosure. The commercial judgement remains yours."
+      },
+      {
+        "heading": "How to verify in two minutes",
+        "body": "Take the registration number from the brochure and look it up on the Haryana RERA portal directly. The filing shows the approved plan, the committed timeline and any complaints. If a developer hesitates to give you the number, that hesitation is itself the answer."
+      }
+    ]
   }
 ]

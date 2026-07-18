@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { UnderDevelopment } from "@/components/common/under-development";
 import { PageHero } from "@/components/layout/page-hero";
+import { Container, Section } from "@/components/ui/container";
+import { BlogList } from "@/features/blog/components/blog-list";
+import { getBlogCategories, getBlogPosts } from "@/lib/data/content";
 
 export const metadata: Metadata = {
   title: "Blog & Insights",
@@ -9,7 +11,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const [posts, categories] = await Promise.all([
+    getBlogPosts(),
+    getBlogCategories(),
+  ]);
+
   return (
     <>
       <PageHero
@@ -19,15 +26,11 @@ export default function BlogPage() {
         breadcrumb={[{ label: "Blog" }]}
       />
 
-      <UnderDevelopment
-        planned={[
-          "The full article archive, with categories for market trends, buying guides and project updates.",
-          "Search across every article.",
-          "Related-article recommendations at the end of each piece.",
-          "Author profiles and read-time estimates.",
-          "SEO-friendly URLs, structured data and a sitemap entry per article.",
-        ]}
-      />
+      <Section className="bg-white">
+        <Container>
+          <BlogList posts={posts} categories={categories} />
+        </Container>
+      </Section>
     </>
   );
 }

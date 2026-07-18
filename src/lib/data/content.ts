@@ -1,6 +1,8 @@
 import blogJson from "@/data/blog.json";
+import faqJson from "@/data/faq.json";
 import jobsJson from "@/data/jobs.json";
 import leadershipJson from "@/data/leadership.json";
+import legalJson from "@/data/legal.json";
 import milestonesJson from "@/data/milestones.json";
 import navigationJson from "@/data/navigation.json";
 import pillarsJson from "@/data/pillars.json";
@@ -9,8 +11,10 @@ import statsJson from "@/data/stats.json";
 import testimonialsJson from "@/data/testimonials.json";
 import type {
   BlogPost,
+  FaqItem,
   Job,
   Leader,
+  LegalDocument,
   Milestone,
   NavLink,
   SiteConfig,
@@ -54,6 +58,37 @@ export async function getLeadership(limit?: number): Promise<Leader[]> {
 
 export async function getMilestones(): Promise<Milestone[]> {
   return milestonesJson as Milestone[];
+}
+
+/** Distinct blog categories, for the listing filter. */
+export async function getBlogCategories(): Promise<string[]> {
+  return [...new Set((blogJson as BlogPost[]).map((post) => post.category))];
+}
+
+export async function getFaqs(): Promise<FaqItem[]> {
+  return faqJson as FaqItem[];
+}
+
+/** FAQ grouped by category, in the order the categories first appear. */
+export async function getFaqsByCategory(): Promise<
+  { category: string; items: FaqItem[] }[]
+> {
+  const faqs = faqJson as FaqItem[];
+  const categories = [...new Set(faqs.map((faq) => faq.category))];
+
+  return categories.map((category) => ({
+    category,
+    items: faqs.filter((faq) => faq.category === category),
+  }));
+}
+
+export async function getLegalDocument(): Promise<LegalDocument> {
+  return legalJson as LegalDocument;
+}
+
+/** Distinct departments present in the openings, for the careers filter. */
+export async function getJobDepartments(): Promise<string[]> {
+  return [...new Set((jobsJson as Job[]).map((job) => job.department))];
 }
 
 export async function getBlogPosts(limit?: number): Promise<BlogPost[]> {

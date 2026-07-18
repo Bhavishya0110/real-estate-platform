@@ -6,7 +6,21 @@
     "department": "Sales",
     "type": "Full-time",
     "location": "Gurugram",
-    "experience": "6–10 years"
+    "experience": "6–10 years",
+    "summary": "Own a portfolio of two to three projects end to end — from first enquiry through booking and handover — leading a small team of advisors.",
+    "responsibilities": [
+      "Own the sales number for an assigned set of projects, and the forecast behind it.",
+      "Lead, coach and review a team of four to six sales advisors.",
+      "Run site visits personally for high-intent buyers and close negotiations within the published price sheet.",
+      "Work with CRM to keep post-booking documentation moving without buyer chasing.",
+      "Feed market intelligence back into pricing and launch planning."
+    ],
+    "requirements": [
+      "Six or more years in residential or commercial real estate sales, with at least two leading a team.",
+      "A track record you can evidence — bookings closed, not just enquiries handled.",
+      "Fluency in English and Hindi.",
+      "Comfort working to a fixed, published price sheet rather than discretionary discounting."
+    ]
   },
   {
     "id": "job-02",
@@ -15,7 +29,21 @@
     "department": "Projects",
     "type": "Full-time",
     "location": "Gurugram",
-    "experience": "3–6 years"
+    "experience": "3–6 years",
+    "summary": "Run day-to-day execution on an active site, with direct accountability for quality checks at every slab.",
+    "responsibilities": [
+      "Supervise daily site execution against the approved drawings and programme.",
+      "Run quality checks at each stage and maintain the third-party audit trail.",
+      "Coordinate contractors, material flow and safety compliance on site.",
+      "Track progress against the published construction timeline and escalate slippage early.",
+      "Maintain accurate site records for the RERA quarterly filing."
+    ],
+    "requirements": [
+      "B.E. or B.Tech in Civil Engineering.",
+      "Three or more years on active residential or commercial sites.",
+      "Working knowledge of AutoCAD and standard project scheduling tools.",
+      "A bias for flagging problems early rather than absorbing them quietly."
+    ]
   },
   {
     "id": "job-03",
@@ -24,7 +52,21 @@
     "department": "Marketing",
     "type": "Full-time",
     "location": "Gurugram",
-    "experience": "4–8 years"
+    "experience": "4–8 years",
+    "summary": "Own demand generation across search, social and performance channels — measured on qualified leads and cost per booking, not impressions.",
+    "responsibilities": [
+      "Plan and run paid campaigns across Google and Meta for project launches.",
+      "Own SEO and content strategy for the website and blog.",
+      "Instrument and report on GA4 events, attribution and cost per qualified lead.",
+      "Work with the sales desk to close the loop between lead source and booking.",
+      "Manage agency partners and the creative pipeline."
+    ],
+    "requirements": [
+      "Four or more years in performance marketing, ideally in real estate or another considered-purchase category.",
+      "Hands-on with GA4, Google Ads and Meta Ads Manager.",
+      "Comfortable being measured on cost per booking rather than traffic.",
+      "Strong written English."
+    ]
   },
   {
     "id": "job-04",
@@ -33,6 +75,20 @@
     "department": "Customer Success",
     "type": "Full-time",
     "location": "Gurugram",
-    "experience": "2–4 years"
+    "experience": "2–4 years",
+    "summary": "Be the named point of contact for buyers after booking — documentation, payment milestones and construction updates.",
+    "responsibilities": [
+      "Act as the relationship manager for an assigned set of buyers from booking to handover.",
+      "Manage allotment letters, agreements and payment-milestone communication.",
+      "Share construction progress updates proactively, before buyers have to ask.",
+      "Resolve queries within committed response times and escalate what you cannot.",
+      "Keep CRM records accurate and current."
+    ],
+    "requirements": [
+      "Two or more years in customer success, CRM or post-sales in real estate.",
+      "Excellent written and spoken communication in English and Hindi.",
+      "Genuine patience — this role exists to remove anxiety from a large purchase.",
+      "Working knowledge of a CRM platform."
+    ]
   }
 ]

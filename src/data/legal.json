@@ -1,0 +1,56 @@
+{
+  "lastUpdated": "2026-07-01",
+  "sections": [
+    {
+      "id": "legal-intro",
+      "heading": "Who we are",
+      "body": "This website is operated by JMS Buildtech (\"JMS Group\", \"we\", \"us\"), with its corporate office at M3M Tee Point, 7th Floor, North Block, Sector 65, Gurugram, Haryana 122018. This policy explains what we collect when you use this site, why we collect it, how long we keep it and how you can ask us to delete it."
+    },
+    {
+      "id": "legal-collect",
+      "heading": "What we collect",
+      "body": "We collect only what you give us and what we need to answer you.",
+      "items": [
+        "Contact details you submit — name, phone number, email address and any message you write.",
+        "The project or page your enquiry came from, so the right advisor picks it up.",
+        "Résumé and application details, if you apply for a role through the careers section.",
+        "Standard analytics: pages viewed, approximate location by city, device and browser, and how you arrived at the site."
+      ]
+    },
+    {
+      "id": "legal-why",
+      "heading": "Why we collect it",
+      "body": "Enquiry data is used to respond to you, arrange site visits, share pricing and brochures, and keep you informed about the project you asked about. Analytics data is used in aggregate to understand which pages are useful and where the site is failing people. We do not sell your data, and we do not share it with third parties for their own marketing."
+    },
+    {
+      "id": "legal-cookies",
+      "heading": "Cookies and analytics",
+      "body": "We use Google Analytics 4 and Google Tag Manager to understand site usage, and heatmap tooling to see where visitors struggle. These set cookies in your browser. You can block or clear them through your browser settings without losing access to any part of this site."
+    },
+    {
+      "id": "legal-retention",
+      "heading": "How long we keep it",
+      "body": "Enquiry records are retained for as long as you remain an active prospect and for a reasonable period afterwards for audit purposes. Records relating to an actual booking are retained as long as required under applicable law and our contractual obligations to you. Unsuccessful job applications are retained for twelve months unless you ask us to remove them sooner."
+    },
+    {
+      "id": "legal-rights",
+      "heading": "Your rights",
+      "body": "You can ask us what we hold about you, ask us to correct it, or ask us to delete it. Write to info@jmsgroup.co.in and we will respond. Marketing messages always carry an unsubscribe option, and opting out of marketing never affects service communication about a property you have booked."
+    },
+    {
+      "id": "legal-security",
+      "heading": "Security",
+      "body": "This site is served over HTTPS. Enquiry forms are validated before submission and protected against automated abuse. Access to buyer records inside JMS Group is limited to the sales, CRM and finance staff who need it to do their jobs."
+    },
+    {
+      "id": "legal-disclaimer",
+      "heading": "RERA disclaimer",
+      "body": "All projects marketed on this website are registered with the Haryana Real Estate Regulatory Authority. Registration numbers are issued with each project's price sheet and printed on its brochure. Images, plans and specifications shown on this site are indicative. Nothing on this website constitutes an offer or a contract; the binding terms are those in your allotment letter and agreement to sell."
+    },
+    {
+      "id": "legal-changes",
+      "heading": "Changes to this policy",
+      "body": "We may update this policy as our systems and integrations change. The date at the top of this page always reflects the current version."
+    }
+  ]
+}
