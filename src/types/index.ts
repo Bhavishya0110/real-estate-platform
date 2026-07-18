@@ -91,6 +91,22 @@ export interface Stat {
   label: string;
 }
 
+export interface Leader {
+  id: string;
+  name: string;
+  role: string;
+  /** Rendered in the avatar until real headshots are supplied. */
+  initials: string;
+  bio: string;
+}
+
+export interface Milestone {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+}
+
 export interface ValuePillar {
   id: string;
   title: string;

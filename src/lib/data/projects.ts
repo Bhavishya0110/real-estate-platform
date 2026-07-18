@@ -13,6 +13,19 @@ import type { Project, ProjectCategory } from "@/types";
 
 const projects = projectsJson as Project[];
 
+/**
+ * The business splits the portfolio two ways for navigation: everything people
+ * live in, and everything people trade from. Plots, senior living and luxury all
+ * belong on the residential side, so the rule lives here — in the repository —
+ * rather than being re-derived by each page.
+ */
+const RESIDENTIAL_CATEGORIES: ProjectCategory[] = [
+  "Residential",
+  "Plots",
+  "Senior Living",
+  "Luxury",
+];
+
 export async function getProjects(): Promise<Project[]> {
   return projects;
 }
@@ -32,6 +45,38 @@ export async function getProjectsByCategory(
   category: ProjectCategory,
 ): Promise<Project[]> {
   return projects.filter((project) => project.category === category);
+}
+
+/** Everything a buyer would live in — BRD §5 "Residential portfolio". */
+export async function getResidentialProjects(): Promise<Project[]> {
+  return projects.filter((project) =>
+    RESIDENTIAL_CATEGORIES.includes(project.category),
+  );
+}
+
+/** Everything an investor would let or trade from — BRD §5 "Commercial". */
+export async function getCommercialProjects(): Promise<Project[]> {
+  return projects.filter((project) => project.category === "Commercial");
+}
+
+/**
+ * Projects to show at the foot of a detail page: same category first, then
+ * anything else, never the project you are already looking at.
+ */
+export async function getRelatedProjects(
+  slug: string,
+  limit = 3,
+): Promise<Project[]> {
+  const current = projects.find((project) => project.slug === slug);
+  if (!current) return projects.slice(0, limit);
+
+  const others = projects.filter((project) => project.slug !== slug);
+  const sameCategory = others.filter(
+    (project) => project.category === current.category,
+  );
+  const rest = others.filter((project) => project.category !== current.category);
+
+  return [...sameCategory, ...rest].slice(0, limit);
 }
 
 /** Distinct categories present in the portfolio, for filter tabs. */

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ldr-01",
+    "name": "Pushpender Singh",
+    "role": "Founder & Managing Director",
+    "initials": "PS",
+    "bio": "Founded JMS Group in 2013 and has led every acquisition since. Sets the land strategy and signs off on each project's construction standard personally."
+  },
+  {
+    "id": "ldr-02",
+    "name": "Virender Singh",
+    "role": "Director",
+    "initials": "VS",
+    "bio": "Oversees execution across the portfolio, from approvals through handover, and owns the relationship with our contracting partners."
+  },
+  {
+    "id": "ldr-03",
+    "name": "Vinay Verma",
+    "role": "Director",
+    "initials": "VV",
+    "bio": "Leads business development and joint ventures, with a focus on the Dwarka Expressway and Golf Course Extension corridors."
+  },
+  {
+    "id": "ldr-04",
+    "name": "Sanjay K. Aggarwal",
+    "role": "Chief Financial Officer",
+    "initials": "SA",
+    "bio": "Runs capital structure, project finance and the transparent single-price-sheet policy that governs how we quote."
+  },
+  {
+    "id": "ldr-05",
+    "name": "Ravi Kant Gautam",
+    "role": "President — Projects",
+    "initials": "RG",
+    "bio": "Accountable for construction quality, third-party audits and the delivery timeline published on every project page."
+  },
+  {
+    "id": "ldr-06",
+    "name": "Anisha Tiwari",
+    "role": "Vice President — Sales",
+    "initials": "AT",
+    "bio": "Leads the sales desk and the advisor team that answers every enquiry raised through this site."
+  },
+  {
+    "id": "ldr-07",
+    "name": "Namrata Chopra",
+    "role": "Sr. General Manager — CRM",
+    "initials": "NC",
+    "bio": "Owns the post-booking experience: documentation, construction updates and the relationship manager assigned to each buyer."
+  },
+  {
+    "id": "ldr-08",
+    "name": "Raghvendra Singh",
+    "role": "General Manager — Sales",
+    "initials": "RS",
+    "bio": "Manages channel partners and site-visit operations across Gurugram and the wider NCR."
+  }
+]

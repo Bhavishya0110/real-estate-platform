@@ -1,5 +1,7 @@
 import blogJson from "@/data/blog.json";
 import jobsJson from "@/data/jobs.json";
+import leadershipJson from "@/data/leadership.json";
+import milestonesJson from "@/data/milestones.json";
 import navigationJson from "@/data/navigation.json";
 import pillarsJson from "@/data/pillars.json";
 import siteJson from "@/data/site.json";
@@ -8,6 +10,8 @@ import testimonialsJson from "@/data/testimonials.json";
 import type {
   BlogPost,
   Job,
+  Leader,
+  Milestone,
   NavLink,
   SiteConfig,
   Stat,
@@ -41,6 +45,15 @@ export async function getPillars(): Promise<ValuePillar[]> {
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   return testimonialsJson as Testimonial[];
+}
+
+export async function getLeadership(limit?: number): Promise<Leader[]> {
+  const leaders = leadershipJson as Leader[];
+  return limit ? leaders.slice(0, limit) : leaders;
+}
+
+export async function getMilestones(): Promise<Milestone[]> {
+  return milestonesJson as Milestone[];
 }
 
 export async function getBlogPosts(limit?: number): Promise<BlogPost[]> {

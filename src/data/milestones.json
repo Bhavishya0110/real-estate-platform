@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ms-2013",
+    "year": "2013",
+    "title": "JMS Group is founded",
+    "description": "Established in Gurugram with a single conviction: publish one price sheet, and hold to it."
+  },
+  {
+    "id": "ms-2016",
+    "year": "2016",
+    "title": "First commercial delivery",
+    "description": "Our first high-street retail address is handed over, setting the template for the commercial portfolio."
+  },
+  {
+    "id": "ms-2019",
+    "year": "2019",
+    "title": "Expansion into plotted development",
+    "description": "Clear-title, fully serviced plots launch on the Sohna and New Gurugram growth corridors."
+  },
+  {
+    "id": "ms-2022",
+    "year": "2022",
+    "title": "1,000 customers and investors",
+    "description": "The portfolio crosses a thousand families and investors, with a team of more than a hundred behind it."
+  },
+  {
+    "id": "ms-2026",
+    "year": "2026",
+    "title": "Fourteen landmark addresses",
+    "description": "Residential, commercial, plotted, senior living and luxury developments across Gurugram and the NCR."
+  }
+]
