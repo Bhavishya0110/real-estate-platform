@@ -8,9 +8,20 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "auth:hash": "node scripts/hash-password.mjs"
+    "auth:hash": "node scripts/hash-password.mjs",
+    "db:migrate": "node scripts/with-env.mjs npx prisma migrate deploy --schema prisma/schema.prisma",
+    "db:generate": "node scripts/with-env.mjs npx prisma generate --schema prisma/schema.prisma",
+    "db:seed": "node scripts/with-env.mjs node prisma/seed.mjs",
+    "db:studio": "node scripts/with-env.mjs npx prisma studio --schema prisma/schema.prisma",
+    "db:verify": "node scripts/with-env.mjs node scripts/verify-schema.mjs",
+    "db:verify-seed": "node scripts/with-env.mjs node scripts/verify-seed.mjs",
+    "db:verify-writes": "node scripts/with-env.mjs node scripts/verify-write-path.mjs",
+    "storage:provision": "node scripts/with-env.mjs node scripts/provision-storage.mjs",
+    "postinstall": "prisma generate --schema prisma/schema.prisma"
   },
   "dependencies": {
+    "@prisma/client": "6.19.3",
+    "@supabase/supabase-js": "2.110.7",
     "clsx": "^2.1.1",
     "lucide-react": "^1.24.0",
     "next": "15.5.20",
@@ -28,6 +39,7 @@
     "eslint-config-next": "15.5.20",
     "shadcn": "^4.13.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "prisma": "6.19.3"
   }
 }

@@ -3,7 +3,8 @@ import { Mail } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
-import { getLegalDocument, siteConfig } from "@/lib/data/content";
+import { getLegalDocument } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {

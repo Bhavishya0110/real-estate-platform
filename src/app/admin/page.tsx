@@ -17,7 +17,7 @@ import {
   getProjects,
   getResidentialProjects,
 } from "@/lib/data/projects";
-import { callbackRepository, leadRepository } from "@/lib/repositories";
+import { callbackRepository, dataSource, leadRepository } from "@/lib/repositories";
 import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -178,7 +178,11 @@ export default async function AdminDashboardPage() {
             <div className="flex items-center justify-between gap-3">
               <dt className="text-navy-400">Data source</dt>
               <dd>
-                <AdminBadge tone="warning">JSON</AdminBadge>
+                {dataSource === "postgresql" ? (
+                  <AdminBadge tone="success">PostgreSQL</AdminBadge>
+                ) : (
+                  <AdminBadge tone="warning">JSON</AdminBadge>
+                )}
               </dd>
             </div>
             <div className="flex items-center justify-between gap-3">
@@ -202,15 +206,19 @@ export default async function AdminDashboardPage() {
             <div className="flex items-center justify-between gap-3">
               <dt className="text-navy-400">Operator accounts</dt>
               <dd>
-                <AdminBadge tone="warning">Environment</AdminBadge>
+                {dataSource === "postgresql" ? (
+                  <AdminBadge tone="success">Database</AdminBadge>
+                ) : (
+                  <AdminBadge tone="warning">Environment</AdminBadge>
+                )}
               </dd>
             </div>
           </dl>
 
           <p className="mt-6 border-t border-white/10 pt-5 text-xs leading-relaxed text-navy-400">
-            Content is read through the repository layer. Swapping JSON for
-            PostgreSQL replaces the repository implementations only — no page or
-            component changes.
+            {dataSource === "postgresql"
+              ? "Every figure above is read from PostgreSQL through the repository layer. The swap replaced the repository implementations only — no page or component changed."
+              : "Content is read through the repository layer from local JSON. Set DATABASE_URL to switch to PostgreSQL; no page or component changes."}
           </p>
         </AdminCard>
       </section>

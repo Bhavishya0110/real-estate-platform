@@ -4,7 +4,7 @@ import { Logo } from "@/components/common/logo";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { getFeaturedProjects } from "@/lib/data/projects";
-import { navigation, siteConfig } from "@/lib/data/content";
+import { navigation, siteConfig } from "@/lib/data/site-config";
 import { telHref } from "@/lib/whatsapp";
 
 /**

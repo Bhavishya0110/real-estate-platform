@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 
 /**
  * The social card, generated at build time from the brand tokens.

@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import type { BlogPost, Job, Project } from "@/types";
 
 /**

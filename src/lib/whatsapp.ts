@@ -1,4 +1,4 @@
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 
 /**
  * BRD acceptance criteria — "Clicking WhatsApp opens a conversation with the

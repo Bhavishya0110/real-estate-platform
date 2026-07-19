@@ -5,7 +5,8 @@ import { PageHero } from "@/components/layout/page-hero";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
-import { getJobBySlug, getJobs, siteConfig } from "@/lib/data/content";
+import { getJobBySlug, getJobs } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { breadcrumbSchema, jobPostingSchema } from "@/lib/schema";
 import { whatsappUrl } from "@/lib/whatsapp";
 

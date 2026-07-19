@@ -4,12 +4,8 @@ import { PageHero } from "@/components/layout/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import {
-  getLeadership,
-  getMilestones,
-  getStats,
-  siteConfig,
-} from "@/lib/data/content";
+import { getLeadership, getMilestones, getStats } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { getProjectCount } from "@/lib/data/projects";
 import { formatNumber } from "@/lib/format";
 

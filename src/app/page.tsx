@@ -8,7 +8,7 @@ import { PremiumHighlights } from "@/features/home/components/premium-highlights
 import { Testimonials } from "@/features/home/components/testimonials";
 import { TrustBar } from "@/features/home/components/trust-bar";
 import { WhyChooseUs } from "@/features/home/components/why-choose-us";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 
 export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.tagline}`,

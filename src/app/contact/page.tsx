@@ -5,7 +5,7 @@ import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/container";
 import { EnquiryForm } from "@/features/contact/components/enquiry-form";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { getProjects } from "@/lib/data/projects";
 import { telHref, whatsappUrl } from "@/lib/whatsapp";
 

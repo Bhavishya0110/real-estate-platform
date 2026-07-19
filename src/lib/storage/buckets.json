@@ -1,0 +1,115 @@
+{
+  "comment": "Bucket declarations shared by the application (buckets.ts) and the provisioning script. Inert data on purpose: both consume this file directly, so provisioning and runtime cannot disagree about which buckets exist or which are public. fileSizeLimit is bytes; Supabase enforces a project-wide 50 MB ceiling on the current plan and rejects any bucket declaring more.",
+  "platformUploadCeiling": 52428800,
+  "mimeGroups": {
+    "image": ["image/jpeg", "image/png", "image/webp", "image/avif"],
+    "video": ["video/mp4", "video/webm", "video/quicktime"],
+    "document": [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ]
+  },
+  "buckets": [
+    {
+      "name": "projects",
+      "isPublic": true,
+      "fileSizeLimit": 20971520,
+      "mimeGroups": ["image"],
+      "description": "Project hero and gallery photography."
+    },
+    {
+      "name": "gallery",
+      "isPublic": true,
+      "fileSizeLimit": 20971520,
+      "mimeGroups": ["image"],
+      "description": "Curated gallery albums."
+    },
+    {
+      "name": "homepage",
+      "isPublic": true,
+      "fileSizeLimit": 20971520,
+      "mimeGroups": ["image"],
+      "description": "Homepage section artwork."
+    },
+    {
+      "name": "blogs",
+      "isPublic": true,
+      "fileSizeLimit": 20971520,
+      "mimeGroups": ["image"],
+      "description": "Article cover images and in-body figures."
+    },
+    {
+      "name": "brochures",
+      "isPublic": false,
+      "fileSizeLimit": 52428800,
+      "mimeGroups": ["document"],
+      "description": "Project brochures. Lead-gated — served via signed URL only."
+    },
+    {
+      "name": "floor-plans",
+      "isPublic": false,
+      "fileSizeLimit": 31457280,
+      "mimeGroups": ["image"],
+      "extraMimeTypes": ["application/pdf"],
+      "description": "Unit floor plans. Frequently lead-gated."
+    },
+    {
+      "name": "master-plans",
+      "isPublic": true,
+      "fileSizeLimit": 31457280,
+      "mimeGroups": ["image"],
+      "extraMimeTypes": ["application/pdf"],
+      "description": "Site master plans and layout drawings."
+    },
+    {
+      "name": "videos",
+      "isPublic": true,
+      "fileSizeLimit": 52428800,
+      "mimeGroups": ["video"],
+      "description": "Walkthroughs and drone footage. Longer films belong on a streaming host with only the embed URL stored."
+    },
+    {
+      "name": "360",
+      "isPublic": true,
+      "fileSizeLimit": 52428800,
+      "mimeGroups": ["image", "video"],
+      "description": "360° panoramas and tour assets."
+    },
+    {
+      "name": "documents",
+      "isPublic": false,
+      "fileSizeLimit": 52428800,
+      "mimeGroups": ["document"],
+      "description": "RERA certificates, approvals and legal documents."
+    },
+    {
+      "name": "avatars",
+      "isPublic": false,
+      "fileSizeLimit": 5242880,
+      "mimeGroups": ["image"],
+      "description": "Operator profile photographs."
+    },
+    {
+      "name": "company",
+      "isPublic": true,
+      "fileSizeLimit": 20971520,
+      "mimeGroups": ["image"],
+      "description": "Logos, leadership portraits and office photography."
+    },
+    {
+      "name": "testimonials",
+      "isPublic": true,
+      "fileSizeLimit": 52428800,
+      "mimeGroups": ["image", "video"],
+      "description": "Customer photographs and video testimonials."
+    },
+    {
+      "name": "careers",
+      "isPublic": false,
+      "fileSizeLimit": 15728640,
+      "mimeGroups": ["document"],
+      "description": "Candidate résumés. Personal data — private, retention-limited."
+    }
+  ]
+}

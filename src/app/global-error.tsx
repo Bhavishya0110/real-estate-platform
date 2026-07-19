@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 
 /**
  * The last-resort error boundary.

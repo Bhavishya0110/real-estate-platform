@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AdminCard } from "@/features/admin/components/admin-ui";
 import { PlaceholderModule } from "@/features/admin/components/placeholder-module";
-import { navigation } from "@/lib/data/content";
+import { navigation } from "@/lib/data/site-config";
 
 export const metadata: Metadata = { title: "Navigation CMS" };
 

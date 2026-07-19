@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import { ChatbotWidget } from "@/features/chatbot/components/chatbot-widget";
 import { buildKnowledgeSnapshot } from "@/features/chatbot/lib/knowledge";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { organizationSchema, SITE_URL, websiteSchema } from "@/lib/schema";
 import { fontVariables } from "./fonts";
 import "./globals.css";

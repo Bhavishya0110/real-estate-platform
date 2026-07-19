@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { siteConfig } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 
 /** Wordmark + gold monogram. `onDark` flips it for navy surfaces. */
 export function Logo({

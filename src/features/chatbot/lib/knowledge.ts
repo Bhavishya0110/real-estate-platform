@@ -1,4 +1,5 @@
-import { getFaqs, siteConfig } from "@/lib/data/content";
+import { getFaqs } from "@/lib/data/content";
+import { siteConfig } from "@/lib/data/site-config";
 import { getProjects } from "@/lib/data/projects";
 import type { KnowledgeSnapshot } from "../types";
 

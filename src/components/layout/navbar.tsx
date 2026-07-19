@@ -8,7 +8,7 @@ import { Logo } from "@/components/common/logo";
 import { WhatsAppIcon } from "@/components/common/whatsapp-icon";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { navigation, siteConfig } from "@/lib/data/content";
+import { navigation, siteConfig } from "@/lib/data/site-config";
 import { useDialog } from "@/lib/use-dialog";
 import { telHref, whatsappUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";

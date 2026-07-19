@@ -11,7 +11,24 @@
  * through every guarded route.
  */
 
-export const ROLES = ["owner", "admin", "editor", "viewer"] as const;
+/**
+ * The roles the business actually has.
+ *
+ * `editor` is retained as an alias for `content_editor` so any session token
+ * issued before the database migration still validates — dropping it would
+ * have signed those operators out mid-shift for no benefit.
+ */
+export const ROLES = [
+  "owner",
+  "admin",
+  "sales_manager",
+  "sales_executive",
+  "content_editor",
+  "marketing",
+  "support",
+  "editor",
+  "viewer",
+] as const;
 
 export type Role = (typeof ROLES)[number];
 
@@ -34,13 +51,36 @@ const ALL: Permission[] = [
   "users:manage",
 ];
 
-/** What each role may do. The single source of truth for authorisation. */
+/**
+ * What each role may do.
+ *
+ * These coarse permissions guard the routes; the fine-grained
+ * `resource:action` grants in `role_permissions` guard individual operations.
+ * Both are seeded from the same role definitions, so they cannot disagree about
+ * who is an editor — this table is the one the middleware and layout can read
+ * without a database round trip.
+ */
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   // The account that can hand out access, including to other owners.
   owner: ALL,
   // Runs the site day to day but cannot change who has access.
   admin: ALL.filter((permission) => permission !== "users:manage"),
-  // Publishes content and works the lead queue; no configuration.
+  // Owns the pipeline: every lead, not only their own.
+  sales_manager: [
+    "content:read",
+    "leads:read",
+    "leads:write",
+    "settings:read",
+  ],
+  // Works their own assigned leads. Row scoping is enforced in the repository.
+  sales_executive: ["content:read", "leads:read", "leads:write"],
+  // Publishes the catalogue and editorial content. No lead access at all.
+  content_editor: ["content:read", "content:write", "settings:read"],
+  // SEO, campaigns and reporting; aggregate lead visibility only.
+  marketing: ["content:read", "content:write", "leads:read", "settings:read"],
+  // Answers enquiries, callbacks and chat.
+  support: ["content:read", "leads:read", "leads:write"],
+  // Legacy alias for content_editor — see ROLES.
   editor: ["content:read", "content:write", "leads:read", "leads:write", "settings:read"],
   // Read-only — for reporting or a new joiner still finding their feet.
   viewer: ["content:read", "leads:read", "settings:read"],
@@ -50,6 +90,11 @@ export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
 export const ROLE_LABELS: Record<Role, string> = {
   owner: "Owner",
   admin: "Administrator",
+  sales_manager: "Sales Manager",
+  sales_executive: "Sales Executive",
+  content_editor: "Content Editor",
+  marketing: "Marketing",
+  support: "Support",
   editor: "Editor",
   viewer: "Viewer",
 };
